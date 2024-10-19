@@ -14,11 +14,3 @@ type Order struct {
 	Status          string    `json:"status" gorm:"default:'pending'"`
 	CreatedAt       time.Time `json:"created_at"`
 }
-
-type User struct {
-	ID       uint   `json:"id" gorm:"primary_key"`
-	Name     string `json:"name" gorm:"not null"`
-	Email    string `json:"email" gorm:"unique;not null"`
-	Phone    string `json:"phone" gorm:"not null"`
-	Password string `json:"password" gorm:"not null"`
-}
