@@ -14,6 +14,7 @@ func main() {
 	// Public routes
 	router.HandleFunc("/register", handlers.RegisterUser).Methods("POST")
 	router.HandleFunc("/login", handlers.Login).Methods("POST")
+	router.HandleFunc("/order/create", handlers.CreateOrder).Methods("POST")
 
 	// Protected routes (in the future)
 	// router.Handle("/orders", middleware.Auth(http.HandlerFunc(handlers.GetOrders))).Methods("GET")
