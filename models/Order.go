@@ -6,8 +6,8 @@ import (
 )
 
 type Order struct {
-	ID              uint      `json:"id" gorm:"primary_key"`
-	UserID          uint      `json:"user_id" gorm:"not null"`
+	ID              int       `json:"id" gorm:"primary_key"`
+	UserID          int       `json:"user_id" gorm:"not null"`
 	PickupLocation  string    `json:"pickup_location" gorm:"not null"`
 	DropOffLocation string    `json:"dropoff_location" gorm:"not null"`
 	PackageDetails  string    `json:"package_details" gorm:"not null"`

@@ -4,32 +4,37 @@ import (
 	"Package-Tracker/database"
 	"Package-Tracker/models"
 	"encoding/json"
-	"fmt"
+	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"net/http"
-	"os"
-	"strconv"
 )
 
-func GetIDFromToken(tokenString string) (string, error) {
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-		return []byte(os.Getenv("SECRET_KEY")), nil // Replace with your actual secret
-	})
-
+// function to get id from token
+func GetIDFromToken(req *http.Request) (int, error) {
+	// Get the user ID from the token
+	cookie, _ := req.Cookie("token")
+	claims, err := ParseToken(cookie)
 	if err != nil {
-		return "", err
+		return 0, err
 	}
-
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		id := claims["id"].(string)
-		return id, nil
-	}
-
-	return "", fmt.Errorf("invalid token")
+	id := claims.ID
+	return id, nil
 }
+
+func ParseToken(cookie *http.Cookie) (*Claims, error) {
+	claims := &Claims{}
+	token, err := jwt.ParseWithClaims(cookie.Value, claims, func(token *jwt.Token) (interface{}, error) {
+		return jwtKey, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if !token.Valid {
+		return nil, errors.New("Invalid token")
+	}
+	return claims, nil
+}
+
 func CreateOrder(writer http.ResponseWriter, req *http.Request) {
 	var order models.Order
 	err := json.NewDecoder(req.Body).Decode(&order)
@@ -53,15 +58,18 @@ func CreateOrder(writer http.ResponseWriter, req *http.Request) {
 		http.Error(writer, "Delivery time is required", http.StatusBadRequest)
 		return
 	}
-	// Get the user ID from the token
-	cookie, _ := req.Cookie("token")
-	num, err := GetIDFromToken(cookie.Value)
+
+	// --------------------------------------------------
+
+	// get id from token
+	id, err := GetIDFromToken(req)
 	if err != nil {
 		http.Error(writer, "Could not get user ID "+err.Error(), http.StatusInternalServerError)
 		return
 	}
-	id, _ := strconv.Atoi(num)
-	order.UserID = uint(id)
+	order.UserID = id
+
+	// --------------------------------------------------
 	// save the order
 	if err := database.DB.Create(&order).Error; err != nil {
 		http.Error(writer, "Could not create order", http.StatusInternalServerError)
@@ -70,5 +78,4 @@ func CreateOrder(writer http.ResponseWriter, req *http.Request) {
 
 	writer.WriteHeader(http.StatusCreated)
 	json.NewEncoder(writer).Encode(order)
-
 }

@@ -8,7 +8,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"os"
-	"strconv"
 	"time"
 )
 
@@ -20,13 +19,9 @@ type Credentials struct {
 }
 
 type Claims struct {
-	ID   string `json:"id"`
+	ID   int    `json:"id"`
 	Role string `json:"role"`
 	jwt.StandardClaims
-}
-
-func NewClaims(ID string, role string, standardClaims jwt.StandardClaims) *Claims {
-	return &Claims{ID: ID, Role: role, StandardClaims: standardClaims}
 }
 
 func Login(writer http.ResponseWriter, r *http.Request) {
@@ -52,7 +47,7 @@ func Login(writer http.ResponseWriter, r *http.Request) {
 	// Token creation
 	expirationTime := time.Now().Add(24 * time.Hour)
 	claims := &Claims{
-		ID:   strconv.Itoa(int(user.ID)),
+		ID:   user.ID,
 		Role: user.Role,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
