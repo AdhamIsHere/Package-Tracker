@@ -22,6 +22,6 @@ export class SplashScreenComponent implements OnInit {
       } else {
         clearInterval(interval);
       }
-    }, 100);  
+    }, 100);  // Adjust speed of character appearance (100 ms between characters)
   }
 }
