@@ -125,3 +125,15 @@ func RegisterUser(writer http.ResponseWriter, req *http.Request) {
 	writer.WriteHeader(http.StatusCreated)
 	json.NewEncoder(writer).Encode(user)
 }
+
+func Logout(writer http.ResponseWriter, req *http.Request) {
+	// Clear the token cookie by setting its expiration time to the past
+	http.SetCookie(writer, &http.Cookie{
+		Name:    "token",
+		Value:   "",
+		Expires: time.Unix(0, 0),
+	})
+
+	writer.WriteHeader(http.StatusOK)
+	json.NewEncoder(writer).Encode(map[string]string{"message": "Logged out successfully"})
+}

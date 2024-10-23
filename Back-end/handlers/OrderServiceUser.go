@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/dgrijalva/jwt-go"
+	"log"
 	"net/http"
 )
 
@@ -78,5 +79,60 @@ func CreateOrder(writer http.ResponseWriter, req *http.Request) {
 	}
 
 	writer.WriteHeader(http.StatusCreated)
+	json.NewEncoder(writer).Encode(order)
+}
+
+func GetUserOrders(writer http.ResponseWriter, req *http.Request) {
+	id, err := GetIDFromToken(req)
+	if err != nil {
+		http.Error(writer, "Could not get user ID "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	var orders []models.Order
+	if err := database.DB.Where("user_id = ?", id).Find(&orders).Error; err != nil {
+		http.Error(writer, "Could not get orders", http.StatusInternalServerError)
+		return
+	}
+
+	type OrderSummary struct {
+		ID     int64  `json:"id"`
+		UserID int    `json:"user_id"`
+		Status string `json:"status"`
+	}
+
+	var orderSummaries []OrderSummary
+	for _, order := range orders {
+		orderSummaries = append(orderSummaries, OrderSummary{
+			ID:     order.ID,
+			UserID: order.UserID,
+			Status: order.Status,
+		})
+	}
+
+	json.NewEncoder(writer).Encode(orderSummaries)
+}
+
+func ViewUserOrderDetails(writer http.ResponseWriter, req *http.Request) {
+	id, err := GetIDFromToken(req)
+	if err != nil {
+		http.Error(writer, "Could not get user ID "+err.Error(), http.StatusInternalServerError)
+		log.Printf("Error getting user ID from token: %v", err)
+		return
+	}
+
+	var order models.Order
+	orderID := req.URL.Query().Get("id")
+	if orderID == "" {
+		http.Error(writer, "Order ID is required", http.StatusBadRequest)
+		return
+	}
+
+	if err := database.DB.Where("id = ? AND user_id = ?", orderID, id).Preload("Items").First(&order).Error; err != nil {
+		http.Error(writer, "Could not get order", http.StatusInternalServerError)
+		log.Printf("Error fetching order: %v", err)
+		return
+	}
+
 	json.NewEncoder(writer).Encode(order)
 }
