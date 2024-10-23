@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
       this.authService.login(email, password).subscribe(
         (res: any) => {  // Explicit type annotation for 'res'
           console.log('Logged in successfully!', res);
-          this.router.navigate(['/dashboard']);  // Redirect to dashboard on success
+          this.router.navigate(['/']);  // Redirect to dashboard on success
         },
         (error: any) => {  // Explicit type annotation for 'error'
           console.error('Login error', error);
