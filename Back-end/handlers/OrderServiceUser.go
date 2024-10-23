@@ -50,8 +50,9 @@ func CreateOrder(writer http.ResponseWriter, req *http.Request) {
 		http.Error(writer, "Pickup location is required", http.StatusBadRequest)
 		return
 	}
-	if order.PackageDetails == "" {
-		http.Error(writer, "Package details is required", http.StatusBadRequest)
+
+	if len(order.Items) == 0 {
+		http.Error(writer, "at least 1 item is needed", http.StatusBadRequest)
 		return
 	}
 	if order.DeliveryTime.IsZero() {

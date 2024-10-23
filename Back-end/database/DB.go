@@ -21,5 +21,5 @@ func ConnectDB() {
 		panic("Failed to connect to database")
 	}
 
-	DB.AutoMigrate(&models.User{}, &models.Order{})
+	DB.AutoMigrate(&models.User{}, &models.Order{}, &models.Item{})
 }
