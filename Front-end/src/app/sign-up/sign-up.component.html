@@ -1,7 +1,7 @@
 <div class="signup-container d-flex m-auto justify-content-center align-item-center">
-  <div class="signup-card w-50 text-center bg-light m-auto ">
-    <h2 class="title fw-bold ">Create Account</h2>
-    <p class="subtitle">Sign up to get started</p>
+  <div class="signup-card w-50 bg-light m-auto ">
+    <h2 class="title fw-bold text-center ">Create Account</h2>
+    <p class="subtitle text-center">Sign up to get started</p>
     <form (ngSubmit)="onSubmit()" [formGroup]="signUpForm">
       <div class="form-group">
         <label for="name">Full Name </label>
@@ -100,7 +100,7 @@
         </select>
       </div>
 
-      <button type="submit" class="btn" [disabled]="signUpForm.invalid">
+      <button type="submit" class="btn btn-primary" [disabled]="signUpForm.invalid">
         Sign Up
       </button>
 
