@@ -34,13 +34,13 @@ func Login(writer http.ResponseWriter, r *http.Request) {
 
 	var user models.User
 	if err := database.DB.Where("email = ?", creds.Email).First(&user).Error; err != nil {
-		http.Error(writer, "User not found", http.StatusUnauthorized)
+		http.Error(writer, "User not found", http.StatusBadRequest)
 		return
 	}
 
 	// Compare password
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(creds.Password)); err != nil {
-		http.Error(writer, "Invalid password", http.StatusUnauthorized)
+		http.Error(writer, "Invalid password", http.StatusBadRequest)
 		return
 	}
 
