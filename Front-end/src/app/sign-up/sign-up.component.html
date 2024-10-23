@@ -1,10 +1,10 @@
-<div class="signup-container">
-  <div class="signup-card">
-    <h2 class="title">Create Account</h2>
-    <p class="subtitle">Sign up to get started</p>
+<div class="signup-container d-flex m-auto justify-content-center align-item-center">
+  <div class="signup-card w-50 bg-light m-auto ">
+    <h2 class="title fw-bold text-center ">Create Account</h2>
+    <p class="subtitle text-center">Sign up to get started</p>
     <form (ngSubmit)="onSubmit()" [formGroup]="signUpForm">
       <div class="form-group">
-        <label for="name">Full Name</label>
+        <label for="name">Full Name </label>
         <input
           type="text"
           id="name"
@@ -105,7 +105,8 @@
       </button>
 
       <div class="footer-links">
-        <a routerLink="/login">Already have an account? Sign In</a>
+        <a class="text-decoration-none" routerLink="/login">Already have an account? Sign In</a>
+
       </div>
     </form>
   </div>
