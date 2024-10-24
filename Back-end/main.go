@@ -3,6 +3,7 @@ package main
 import (
 	"Package-Tracker/database"
 	"Package-Tracker/handlers"
+	"Package-Tracker/models"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -48,6 +49,28 @@ func main() {
 
 	// Connect to the database
 	database.ConnectDB()
+	items := []models.Item{
+		{ID: "1", Name: "Laptop", Quantity: 10},
+		{ID: "2", Name: "Phone", Quantity: 20},
+		{ID: "3", Name: "Headphones", Quantity: 15},
+		{ID: "4", Name: "Keyboard", Quantity: 25},
+		{ID: "5", Name: "Mouse", Quantity: 30},
+	}
+
+	// Check if the item already exists in the database
+	var existingItem models.Item
+	result := database.DB.Where("id = ?", items[0].ID).First(&existingItem)
+
+	if result.RowsAffected == 0 {
+		// Item does not exist, insert it
+		if err := database.DB.Create(&items).Error; err != nil {
+			log.Printf("Failed to insert items : %v", err)
+		} else {
+			log.Println("Inserted items")
+		}
+	} else {
+		log.Println("Items already loaded in DB")
+	}
 
 	// Start the server on port 8080
 	if err := http.ListenAndServe(":8080", corsRouter); err != nil {

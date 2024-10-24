@@ -56,6 +56,17 @@ func CreateOrder(writer http.ResponseWriter, req *http.Request) {
 		http.Error(writer, "at least 1 item is needed", http.StatusBadRequest)
 		return
 	}
+	// ------------------------------------
+	for i := 0; i < len(order.Items); i++ {
+		// check if item exists in items table
+		var item models.Item
+		if err := database.DB.Where("id = ?", order.Items[i].ID).First(&item).Error; err != nil {
+			http.Error(writer, "Item(s) does not exist", http.StatusBadRequest)
+			return
+		}
+	}
+
+	// ------------------------------------
 	if order.DeliveryTime.IsZero() {
 		http.Error(writer, "Delivery time is required", http.StatusBadRequest)
 		return
@@ -69,7 +80,7 @@ func CreateOrder(writer http.ResponseWriter, req *http.Request) {
 		http.Error(writer, "Could not get user ID "+err.Error(), http.StatusInternalServerError)
 		return
 	}
-	order.UserID = id
+	order.SellerID = id
 
 	// --------------------------------------------------
 	// save the order
@@ -96,7 +107,7 @@ func GetUserOrders(writer http.ResponseWriter, req *http.Request) {
 	}
 
 	type OrderSummary struct {
-		ID     int64  `json:"id"`
+		ID     int64  `json:"order_id"`
 		UserID int    `json:"user_id"`
 		Status string `json:"status"`
 	}
@@ -104,8 +115,8 @@ func GetUserOrders(writer http.ResponseWriter, req *http.Request) {
 	var orderSummaries []OrderSummary
 	for _, order := range orders {
 		orderSummaries = append(orderSummaries, OrderSummary{
-			ID:     order.ID,
-			UserID: order.UserID,
+			ID:     int64(order.ID),
+			UserID: order.SellerID,
 			Status: order.Status,
 		})
 	}
