@@ -10,7 +10,6 @@
   width: 350px;
 }
 
-
 .title {
   font-size: 24px;
 }
@@ -24,13 +23,13 @@
   margin-bottom: 15px;
 }
 
-input.form-control, select.form-control {
+input.form-control,
+select.form-control {
   width: 100%;
   padding: 10px;
   border-radius: 8px;
   border: 1px solid #ccc;
   margin-top: 5px;
-
 }
 
 .btn-primary {
@@ -45,10 +44,8 @@ input.form-control, select.form-control {
   background-color: #003a77;
 }
 
-
-
-
-input.form-control:focus, select.form-control:focus {
+input.form-control:focus,
+select.form-control:focus {
   border-color: #007bff;
   outline: none;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
@@ -58,6 +55,9 @@ input.form-control:focus, select.form-control:focus {
   color: red;
   font-size: 0.85em;
   margin-top: 5px;
+}
+.error-message {
+  font-size: 1.45em; /* Adjust the font size as needed */
 }
 
 /* Button */
@@ -75,7 +75,6 @@ button.btn {
 button.btn:disabled {
   background-color: #ccc;
 }
-
 
 .footer-links {
   margin-top: 20px;

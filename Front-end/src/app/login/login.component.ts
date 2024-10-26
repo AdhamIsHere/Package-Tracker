@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;  // Add non-null assertion operator to inform TypeScript that this will be initialized later.
-
+  error: string | null = null;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/']);  // Redirect to dashboard on success
         },
         (error: any) => {  // Explicit type annotation for 'error'
+          this.error = error.error;
           console.error('Login error', error);
         }
       );

@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class SignUpComponent implements OnInit {
   signUpForm!: FormGroup;
+  error: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -49,7 +50,8 @@ export class SignUpComponent implements OnInit {
           this.router.navigate(['/']);  // Redirect after successful sign-up
         },
         (error: any) => {
-          console.error('Sign up error', error);
+          this.error = error.error;
+          console.log('Sign up error', error); 
         }
       );
     }
