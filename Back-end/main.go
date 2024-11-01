@@ -39,9 +39,12 @@ func main() {
 	router.HandleFunc("/order/myorders", handlers.GetUserOrders).Methods("GET")
 	router.HandleFunc("/order/view", handlers.ViewUserOrderDetails).Methods("GET")
 
+	// courier routes
+	router.HandleFunc("/order/assigned", handlers.ViewAssignedOrders).Methods("GET")
+
 	//admin routes
 	router.HandleFunc("/order/viewall", handlers.ViewAllOrders).Methods("GET")
-	router.HandleFunc("/order/update", handlers.UpdateOrderStatus).Methods("PUT")
+	router.HandleFunc("/order/assign", handlers.AssignOrder).Methods("PUT")
 	router.HandleFunc("/order/delete", handlers.DeleteOrder).Methods("DELETE")
 
 	// Apply the CORS middleware to the router

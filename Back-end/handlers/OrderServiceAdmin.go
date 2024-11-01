@@ -15,22 +15,22 @@ func ViewAllOrders(writer http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(writer).Encode(orders)
 }
 
-func UpdateOrderStatus(writer http.ResponseWriter, req *http.Request) {
-	var order models.Order
-	err := json.NewDecoder(req.Body).Decode(&order)
-	if err != nil {
-		http.Error(writer, "Invalid request payload", http.StatusBadRequest)
-		return
-	}
-
-	if err := database.DB.Save(&order).Error; err != nil {
-		http.Error(writer, "Could not update order", http.StatusInternalServerError)
-		return
-	}
-
-	writer.WriteHeader(http.StatusOK)
-	json.NewEncoder(writer).Encode(map[string]string{"message": "Order updated successfully"})
-}
+//func UpdateOrderStatus(writer http.ResponseWriter, req *http.Request) {
+//	var order models.Order
+//	err := json.NewDecoder(req.Body).Decode(&order)
+//	if err != nil {
+//		http.Error(writer, "Invalid request payload", http.StatusBadRequest)
+//		return
+//	}
+//
+//	if err := database.DB.Save(&order).Error; err != nil {
+//		http.Error(writer, "Could not update order", http.StatusInternalServerError)
+//		return
+//	}
+//
+//	writer.WriteHeader(http.StatusOK)
+//	json.NewEncoder(writer).Encode(map[string]string{"message": "Order updated successfully"})
+//}
 
 func DeleteOrder(writer http.ResponseWriter, req *http.Request) {
 	// Get the order ID from the request URL
@@ -76,4 +76,55 @@ func DeleteOrder(writer http.ResponseWriter, req *http.Request) {
 
 	writer.WriteHeader(http.StatusOK)
 	json.NewEncoder(writer).Encode(map[string]string{"message": "Order deleted successfully"})
+}
+
+func AssignOrder(writer http.ResponseWriter, req *http.Request) {
+	orderID := req.URL.Query().Get("oid")
+	courierID := req.URL.Query().Get("cid")
+
+	if orderID == "" {
+		http.Error(writer, "Order ID is required", http.StatusBadRequest)
+		return
+	}
+	if courierID == "" {
+		http.Error(writer, "Courier ID is required", http.StatusBadRequest)
+		return
+	}
+
+	oid, err := strconv.Atoi(orderID)
+	if err != nil {
+		http.Error(writer, "Invalid order ID", http.StatusBadRequest)
+		return
+	}
+	cid, err := strconv.Atoi(courierID)
+	if err != nil {
+		http.Error(writer, "Invalid courier ID", http.StatusBadRequest)
+		return
+	}
+
+	// Get the order
+	var order models.Order
+	if err := database.DB.First(&order, oid).Error; err != nil {
+		http.Error(writer, "Order not found", http.StatusNotFound)
+		return
+	}
+
+	// Get the courier
+	var courier models.User
+	if err := database.DB.First(&courier, cid).Error; err != nil {
+		http.Error(writer, "Courier not found", http.StatusNotFound)
+		return
+	}
+
+	// Assign the order to the courier
+	order.CourierID = &cid
+	if err := database.DB.Save(&order).Error; err != nil {
+		http.Error(writer, "Could not assign order", http.StatusInternalServerError)
+		return
+	}
+
+	writer.WriteHeader(http.StatusOK)
+	msg := "Order no." + string(order.ID) + " assigned to " + courier.Name
+	json.NewEncoder(writer).Encode(map[string]string{"message": msg})
+
 }
