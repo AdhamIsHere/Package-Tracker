@@ -4,6 +4,7 @@ import (
 	"Package-Tracker/database"
 	"Package-Tracker/models"
 	"encoding/json"
+	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
@@ -22,6 +23,41 @@ type Claims struct {
 	ID   int    `json:"id"`
 	Role string `json:"role"`
 	jwt.StandardClaims
+}
+
+// function to get id from token
+func GetIDFromToken(req *http.Request) (int, error) {
+	// Get the user ID from the token
+	cookie, _ := req.Cookie("token")
+	claims, err := ParseToken(cookie)
+	if err != nil {
+		return 0, err
+	}
+	id := claims.ID
+	return id, nil
+}
+
+func ParseToken(cookie *http.Cookie) (*Claims, error) {
+	claims := &Claims{}
+	token, err := jwt.ParseWithClaims(cookie.Value, claims, func(token *jwt.Token) (interface{}, error) {
+		return jwtKey, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if !token.Valid {
+		return nil, errors.New("Invalid token")
+	}
+	return claims, nil
+}
+
+// get role from db
+func GetRoleFromID(id int) (string, error) {
+	var user models.User
+	if err := database.DB.Where("id = ?", id).First(&user).Error; err != nil {
+		return "", err
+	}
+	return user.Role, nil
 }
 
 func Login(writer http.ResponseWriter, r *http.Request) {

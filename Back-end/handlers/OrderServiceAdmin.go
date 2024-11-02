@@ -8,50 +8,37 @@ import (
 	"strconv"
 )
 
+func IsAdmin(req *http.Request) bool {
+	id, err := GetIDFromToken(req)
+	if err != nil {
+		panic(err)
+	}
+	role, err := GetRoleFromID(id)
+	if err != nil {
+		panic(err)
+	}
+	if role == "admin" {
+		return true
+	}
+	return false
+}
 func ViewAllOrders(writer http.ResponseWriter, req *http.Request) {
+	if !IsAdmin(req) {
+		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
 	// Get all orders
 	orders := []models.Order{}
 	database.DB.Preload("Items").Find(&orders)
 	json.NewEncoder(writer).Encode(orders)
 }
 
-func UpdateOrderStatus(writer http.ResponseWriter, req *http.Request) {
-	status := req.URL.Query().Get("status")
-
-	orderID := req.URL.Query().Get("id")
-	if orderID == "" {
-		http.Error(writer, "Order ID is required", http.StatusBadRequest)
-		return
-	}
-	if status == "" {
-		http.Error(writer, "Status is required", http.StatusBadRequest)
-		return
-	}
-
-	oid, err := strconv.Atoi(orderID)
-	if err != nil {
-		http.Error(writer, "Invalid order ID", http.StatusBadRequest)
-		return
-	}
-
-	var order models.Order
-	if err := database.DB.First(&order, oid).Error; err != nil {
-		http.Error(writer, "Order not found", http.StatusNotFound)
-		return
-	}
-
-	order.Status = status
-	if err := database.DB.Save(&order).Error; err != nil {
-		http.Error(writer, "Could not update order status", http.StatusInternalServerError)
-		return
-	}
-
-	writer.WriteHeader(http.StatusOK)
-	msg := "Order no." + string(order.ID) + " status updated to " + status
-	json.NewEncoder(writer).Encode(map[string]string{"message": msg})
-}
-
 func DeleteOrder(writer http.ResponseWriter, req *http.Request) {
+
+	if !IsAdmin(req) {
+		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
 	// Get the order ID from the request URL
 	orderID := req.URL.Query().Get("id")
 	if orderID == "" {
@@ -98,6 +85,11 @@ func DeleteOrder(writer http.ResponseWriter, req *http.Request) {
 }
 
 func AssignOrder(writer http.ResponseWriter, req *http.Request) {
+	if !IsAdmin(req) {
+		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
 	orderID := req.URL.Query().Get("oid")
 	courierID := req.URL.Query().Get("cid")
 

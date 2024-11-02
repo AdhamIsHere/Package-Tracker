@@ -4,39 +4,30 @@ import (
 	"Package-Tracker/database"
 	"Package-Tracker/models"
 	"encoding/json"
-	"errors"
-	"github.com/dgrijalva/jwt-go"
 	"log"
 	"net/http"
 )
 
-// function to get id from token
-func GetIDFromToken(req *http.Request) (int, error) {
-	// Get the user ID from the token
-	cookie, _ := req.Cookie("token")
-	claims, err := ParseToken(cookie)
+func IsSeller(req *http.Request) bool {
+	id, err := GetIDFromToken(req)
 	if err != nil {
-		return 0, err
+		panic(err)
 	}
-	id := claims.ID
-	return id, nil
-}
-
-func ParseToken(cookie *http.Cookie) (*Claims, error) {
-	claims := &Claims{}
-	token, err := jwt.ParseWithClaims(cookie.Value, claims, func(token *jwt.Token) (interface{}, error) {
-		return jwtKey, nil
-	})
+	role, err := GetRoleFromID(id)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
-	if !token.Valid {
-		return nil, errors.New("Invalid token")
+	if role == "seller" {
+		return true
 	}
-	return claims, nil
+	return false
 }
 
 func CreateOrder(writer http.ResponseWriter, req *http.Request) {
+	if !IsSeller(req) {
+		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
 	var order models.Order
 	err := json.NewDecoder(req.Body).Decode(&order)
 	if err != nil {
@@ -94,6 +85,10 @@ func CreateOrder(writer http.ResponseWriter, req *http.Request) {
 }
 
 func GetUserOrders(writer http.ResponseWriter, req *http.Request) {
+	if !IsSeller(req) {
+		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
+	}
+
 	id, err := GetIDFromToken(req)
 	if err != nil {
 		http.Error(writer, "Could not get user ID "+err.Error(), http.StatusInternalServerError)
@@ -125,6 +120,10 @@ func GetUserOrders(writer http.ResponseWriter, req *http.Request) {
 }
 
 func ViewUserOrderDetails(writer http.ResponseWriter, req *http.Request) {
+	if !IsSeller(req) {
+		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
 	id, err := GetIDFromToken(req)
 	if err != nil {
 		http.Error(writer, "Could not get user ID "+err.Error(), http.StatusInternalServerError)
