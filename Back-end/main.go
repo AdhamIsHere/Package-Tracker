@@ -36,6 +36,7 @@ func main() {
 	router.HandleFunc("/register", handlers.RegisterUser).Methods("POST")
 	router.HandleFunc("/login", handlers.Login).Methods("POST")
 	router.HandleFunc("/logout", handlers.Logout).Methods("POST")
+	router.HandleFunc("/viewitems", handlers.ViewItems).Methods("GET")
 	router.HandleFunc("/order/create", handlers.CreateOrder).Methods("POST")
 	router.HandleFunc("/order/myorders", handlers.GetUserOrders).Methods("GET")
 	router.HandleFunc("/order/view", handlers.ViewUserOrderDetails).Methods("GET")
