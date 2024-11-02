@@ -87,6 +87,7 @@ func CreateOrder(writer http.ResponseWriter, req *http.Request) {
 func GetUserOrders(writer http.ResponseWriter, req *http.Request) {
 	if !IsSeller(req) {
 		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
+		return
 	}
 
 	id, err := GetIDFromToken(req)
@@ -96,15 +97,22 @@ func GetUserOrders(writer http.ResponseWriter, req *http.Request) {
 	}
 
 	var orders []models.Order
-	if err := database.DB.Where("user_id = ?", id).Find(&orders).Error; err != nil {
-		http.Error(writer, "Could not get orders", http.StatusInternalServerError)
+	if err := database.DB.Where("seller_id = ?", id).Preload("Items").Find(&orders).Error; err != nil {
+		http.Error(writer, "Could not get orders "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	type OrderSummary struct {
 		ID     int64  `json:"order_id"`
-		UserID int    `json:"user_id"`
+		UserID int    `json:"seller_id"`
 		Status string `json:"status"`
+		Number int    `json:"number_of_items"`
+	}
+
+	if len(orders) == 0 {
+		writer.WriteHeader(http.StatusOK)
+		json.NewEncoder(writer).Encode("No orders found")
+		return
 	}
 
 	var orderSummaries []OrderSummary
@@ -113,10 +121,15 @@ func GetUserOrders(writer http.ResponseWriter, req *http.Request) {
 			ID:     int64(order.ID),
 			UserID: order.SellerID,
 			Status: order.Status,
+			Number: len(order.Items),
 		})
 	}
 
-	json.NewEncoder(writer).Encode(orderSummaries)
+	writer.Header().Set("Content-Type", "application/json")
+	writer.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(writer).Encode(orderSummaries); err != nil {
+		http.Error(writer, "Could not encode response "+err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func ViewUserOrderDetails(writer http.ResponseWriter, req *http.Request) {
@@ -138,7 +151,7 @@ func ViewUserOrderDetails(writer http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if err := database.DB.Where("id = ? AND user_id = ?", orderID, id).Preload("Items").First(&order).Error; err != nil {
+	if err := database.DB.Where("id = ? AND seller_id = ?", orderID, id).Preload("Items").First(&order).Error; err != nil {
 		http.Error(writer, "Could not get order", http.StatusInternalServerError)
 		log.Printf("Error fetching order: %v", err)
 		return

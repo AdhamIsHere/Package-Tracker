@@ -22,6 +22,7 @@ func IsAdmin(req *http.Request) bool {
 	}
 	return false
 }
+
 func ViewAllOrders(writer http.ResponseWriter, req *http.Request) {
 	if !IsAdmin(req) {
 		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
@@ -34,19 +35,17 @@ func ViewAllOrders(writer http.ResponseWriter, req *http.Request) {
 }
 
 func DeleteOrder(writer http.ResponseWriter, req *http.Request) {
-
 	if !IsAdmin(req) {
 		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
-	// Get the order ID from the request URL
+
 	orderID := req.URL.Query().Get("id")
 	if orderID == "" {
 		http.Error(writer, "Order ID is required", http.StatusBadRequest)
 		return
 	}
 
-	// Convert orderID to integer
 	id, err := strconv.Atoi(orderID)
 	if err != nil {
 		http.Error(writer, "Invalid order ID", http.StatusBadRequest)
@@ -60,15 +59,23 @@ func DeleteOrder(writer http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// Delete associated items
-	if err := tx.Where("order_id = ?", id).Delete(&models.Item{}).Error; err != nil {
+	// Find the order
+	var order models.Order
+	if err := tx.Preload("Items").First(&order, id).Error; err != nil {
 		tx.Rollback()
-		http.Error(writer, "Could not delete order items", http.StatusInternalServerError)
+		http.Error(writer, "Order not found", http.StatusNotFound)
+		return
+	}
+
+	// Clear the many-to-many relationship from the join table
+	if err := tx.Model(&order).Association("Items").Clear(); err != nil {
+		tx.Rollback()
+		http.Error(writer, "Could not delete order items from join table", http.StatusInternalServerError)
 		return
 	}
 
 	// Delete the order by ID
-	if err := tx.Delete(&models.Order{}, id).Error; err != nil {
+	if err := tx.Delete(&order).Error; err != nil {
 		tx.Rollback()
 		http.Error(writer, "Could not delete order", http.StatusInternalServerError)
 		return
@@ -113,17 +120,23 @@ func AssignOrder(writer http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// Get the order
-	var order models.Order
-	if err := database.DB.First(&order, oid).Error; err != nil {
-		http.Error(writer, "Order not found", http.StatusNotFound)
-		return
-	}
-
 	// Get the courier
 	var courier models.User
 	if err := database.DB.First(&courier, cid).Error; err != nil {
 		http.Error(writer, "Courier not found", http.StatusNotFound)
+		return
+	}
+
+	// Check if the user is a courier
+	if courier.Role != "courier" {
+		http.Error(writer, "User is not a courier", http.StatusBadRequest)
+		return
+	}
+
+	// Get the order
+	var order models.Order
+	if err := database.DB.First(&order, oid).Error; err != nil {
+		http.Error(writer, "Order not found", http.StatusNotFound)
 		return
 	}
 
@@ -135,7 +148,55 @@ func AssignOrder(writer http.ResponseWriter, req *http.Request) {
 	}
 
 	writer.WriteHeader(http.StatusOK)
-	msg := "Order no." + string(order.ID) + " assigned to " + courier.Name
+	msg := "Order no." + strconv.Itoa(order.ID) + " assigned to " + courier.Name
 	json.NewEncoder(writer).Encode(map[string]string{"message": msg})
+}
 
+func UpdateOrderDetails(writer http.ResponseWriter, req *http.Request) {
+	if !IsAdmin(req) {
+		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	orderID := req.URL.Query().Get("id")
+	if orderID == "" {
+		http.Error(writer, "Order ID is required", http.StatusBadRequest)
+		return
+	}
+
+	id, err := strconv.Atoi(orderID)
+	if err != nil {
+		http.Error(writer, "Invalid order ID", http.StatusBadRequest)
+		return
+	}
+
+	var order models.Order
+	if err := database.DB.First(&order, id).Error; err != nil {
+		http.Error(writer, "Order not found", http.StatusNotFound)
+		return
+	}
+
+	var newOrder models.Order
+	err = json.NewDecoder(req.Body).Decode(&newOrder)
+	if err != nil {
+		http.Error(writer, "Invalid request payload", http.StatusBadRequest)
+		return
+	}
+
+	// Update the order details
+	//order.SellerID = newOrder.SellerID
+	order.CourierID = newOrder.CourierID
+	order.PickupLocation = newOrder.PickupLocation
+	order.DropOffLocation = newOrder.DropOffLocation
+	order.DeliveryTime = newOrder.DeliveryTime
+	order.Status = newOrder.Status
+	order.Items = newOrder.Items
+
+	if err := database.DB.Save(&order).Error; err != nil {
+		http.Error(writer, "Could not update order details", http.StatusInternalServerError)
+		return
+	}
+
+	writer.WriteHeader(http.StatusOK)
+	json.NewEncoder(writer).Encode(map[string]string{"message": "Order details updated successfully"})
 }
