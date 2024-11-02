@@ -1,0 +1,43 @@
+<div class="custom-container d-flex justify-content-center align-items-center">
+  <div class="custom-card bg-light m-auto p-4">
+    <h2 class="title fw-bold text-center">Order Details</h2>
+
+    <!-- Display success message -->
+    <div *ngIf="successMessage" class="alert alert-success text-center">
+      {{ successMessage }}
+    </div>
+
+    <form (ngSubmit)="submitOrder()">
+      <div class="form-group">
+        <label for="pickup">Pickup</label>
+        <input type="text" id="pickup" class="form-control" [(ngModel)]="pickupLocation" name="pickupLocation" placeholder="Enter pickup location" required>
+      </div>
+
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input type="text" id="location" class="form-control" [(ngModel)]="deliveryLocation" name="deliveryLocation" placeholder="Enter delivery location" required>
+      </div>
+
+      <div class="form-group">
+        <label for="delivery">Delivery Time</label>
+        <select id="delivery" class="form-control" [(ngModel)]="deliveryTime" name="deliveryTime" required>
+          <option value="" disabled selected>Select delivery time</option>
+          <option value="12:00pm-1:00pm">12:00pm - 1:00pm</option>
+          <option value="1:00pm-2:00pm">1:00pm - 2:00pm</option>
+          <option value="2:00pm-3:00pm">2:00pm - 3:00pm</option>
+          <option value="3:00pm-4:00pm">3:00pm - 4:00pm</option>
+          <option value="4:00pm-5:00pm">4:00pm - 5:00pm</option>
+          <option value="5:00pm-6:00pm">5:00pm - 6:00pm</option>
+          <option value="6:00pm-7:00pm">6:00pm - 7:00pm</option>
+          <option value="7:00pm-8:00pm">7:00pm - 8:00pm</option>
+          <option value="8:00pm-9:00pm">8:00pm - 9:00pm</option>
+          <option value="9:00pm-10:00pm">9:00pm - 10:00pm</option>
+          <option value="10:00pm-11:00pm">10:00pm - 11:00pm</option>
+          <option value="11:00pm-12:00am">11:00pm - 12:00am</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-3 w-100">Submit Order</button>
+    </form>
+  </div>
+</div>

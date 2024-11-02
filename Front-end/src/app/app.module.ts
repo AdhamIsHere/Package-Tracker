@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,6 +11,8 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { AuthService } from './services/auth.service';
 import { SplashScreenComponent } from './splash-screen/splash-screen.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { OrderPageComponent } from './order-page/order-page.component';
+import { MyordersComponent } from './myorders/myorders.component';
 
 @NgModule({
   declarations: [
@@ -17,13 +20,16 @@ import { HomePageComponent } from './home-page/home-page.component';
     LoginComponent,
     SignUpComponent,
     SplashScreenComponent,
-    HomePageComponent
+    HomePageComponent,
+    OrderPageComponent,
+    MyordersComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]
