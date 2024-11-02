@@ -9,8 +9,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  loginForm!: FormGroup;  // Add non-null assertion operator to inform TypeScript that this will be initialized later.
+  loginForm!: FormGroup;
   error: string | null = null;
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -28,11 +29,11 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       this.authService.login(email, password).subscribe(
-        (res: any) => {  // Explicit type annotation for 'res'
+        (res: any) => {
           console.log('Logged in successfully!', res);
-          this.router.navigate(['/']);  // Redirect to dashboard on success
+          this.router.navigate(['/home']);
         },
-        (error: any) => {  // Explicit type annotation for 'error'
+        (error: any) => {
           this.error = error.error;
           console.error('Login error', error);
         }
