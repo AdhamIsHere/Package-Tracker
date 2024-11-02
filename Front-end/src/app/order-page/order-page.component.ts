@@ -30,13 +30,14 @@ export class OrderPageComponent implements OnInit {
     );
   }
 
-  submitOrder(): void {
-    if (this.pickupLocation && this.deliveryLocation && this.deliveryTime) {
-      const orderDetails = {
-        pickup: this.pickupLocation,
-        location: this.deliveryLocation,
-        time: this.deliveryTime
-      };
+    submitOrder(): void {
+      if (this.pickupLocation && this.deliveryLocation && this.deliveryTime) {
+        const orderDetails = {
+          pickup: this.pickupLocation,
+          location: this.deliveryLocation,
+          time: this.deliveryTime
+
+        };
 
       console.log('Order Submitted:', orderDetails);
 
