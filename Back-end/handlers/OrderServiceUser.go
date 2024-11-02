@@ -4,39 +4,39 @@ import (
 	"Package-Tracker/database"
 	"Package-Tracker/models"
 	"encoding/json"
-	"errors"
-	"github.com/dgrijalva/jwt-go"
 	"log"
 	"net/http"
 )
 
-// function to get id from token
-func GetIDFromToken(req *http.Request) (int, error) {
-	// Get the user ID from the token
-	cookie, _ := req.Cookie("token")
-	claims, err := ParseToken(cookie)
+func IsSeller(req *http.Request) bool {
+	id, err := GetIDFromToken(req)
 	if err != nil {
-		return 0, err
+		panic(err)
 	}
-	id := claims.ID
-	return id, nil
+	role, err := GetRoleFromID(id)
+	if err != nil {
+		panic(err)
+	}
+	if role == "seller" {
+		return true
+	}
+	return false
 }
 
-func ParseToken(cookie *http.Cookie) (*Claims, error) {
-	claims := &Claims{}
-	token, err := jwt.ParseWithClaims(cookie.Value, claims, func(token *jwt.Token) (interface{}, error) {
-		return jwtKey, nil
-	})
-	if err != nil {
-		return nil, err
+func ViewItems(writer http.ResponseWriter, req *http.Request) {
+	var items []models.Item
+	if err := database.DB.Find(&items).Error; err != nil {
+		http.Error(writer, "Could not get items "+err.Error(), http.StatusInternalServerError)
+		return
 	}
-	if !token.Valid {
-		return nil, errors.New("Invalid token")
-	}
-	return claims, nil
+	json.NewEncoder(writer).Encode(items)
 }
 
 func CreateOrder(writer http.ResponseWriter, req *http.Request) {
+	if !IsSeller(req) {
+		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
 	var order models.Order
 	err := json.NewDecoder(req.Body).Decode(&order)
 	if err != nil {
@@ -94,6 +94,11 @@ func CreateOrder(writer http.ResponseWriter, req *http.Request) {
 }
 
 func GetUserOrders(writer http.ResponseWriter, req *http.Request) {
+	if !IsSeller(req) {
+		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
 	id, err := GetIDFromToken(req)
 	if err != nil {
 		http.Error(writer, "Could not get user ID "+err.Error(), http.StatusInternalServerError)
@@ -101,15 +106,22 @@ func GetUserOrders(writer http.ResponseWriter, req *http.Request) {
 	}
 
 	var orders []models.Order
-	if err := database.DB.Where("user_id = ?", id).Find(&orders).Error; err != nil {
-		http.Error(writer, "Could not get orders", http.StatusInternalServerError)
+	if err := database.DB.Where("seller_id = ?", id).Preload("Items").Find(&orders).Error; err != nil {
+		http.Error(writer, "Could not get orders "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	type OrderSummary struct {
 		ID     int64  `json:"order_id"`
-		UserID int    `json:"user_id"`
+		UserID int    `json:"seller_id"`
 		Status string `json:"status"`
+		Number int    `json:"number_of_items"`
+	}
+
+	if len(orders) == 0 {
+		writer.WriteHeader(http.StatusOK)
+		json.NewEncoder(writer).Encode("No orders found")
+		return
 	}
 
 	var orderSummaries []OrderSummary
@@ -118,13 +130,22 @@ func GetUserOrders(writer http.ResponseWriter, req *http.Request) {
 			ID:     int64(order.ID),
 			UserID: order.SellerID,
 			Status: order.Status,
+			Number: len(order.Items),
 		})
 	}
 
-	json.NewEncoder(writer).Encode(orderSummaries)
+	writer.Header().Set("Content-Type", "application/json")
+	writer.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(writer).Encode(orderSummaries); err != nil {
+		http.Error(writer, "Could not encode response "+err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func ViewUserOrderDetails(writer http.ResponseWriter, req *http.Request) {
+	if !IsSeller(req) {
+		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
 	id, err := GetIDFromToken(req)
 	if err != nil {
 		http.Error(writer, "Could not get user ID "+err.Error(), http.StatusInternalServerError)
@@ -139,7 +160,7 @@ func ViewUserOrderDetails(writer http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if err := database.DB.Where("id = ? AND user_id = ?", orderID, id).Preload("Items").First(&order).Error; err != nil {
+	if err := database.DB.Where("id = ? AND seller_id = ?", orderID, id).Preload("Items").First(&order).Error; err != nil {
 		http.Error(writer, "Could not get order", http.StatusInternalServerError)
 		log.Printf("Error fetching order: %v", err)
 		return

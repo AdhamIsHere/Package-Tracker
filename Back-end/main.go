@@ -5,6 +5,7 @@ import (
 	"Package-Tracker/handlers"
 	"Package-Tracker/models"
 	"github.com/gorilla/mux"
+	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
 )
@@ -35,12 +36,14 @@ func main() {
 	router.HandleFunc("/register", handlers.RegisterUser).Methods("POST")
 	router.HandleFunc("/login", handlers.Login).Methods("POST")
 	router.HandleFunc("/logout", handlers.Logout).Methods("POST")
+	router.HandleFunc("/viewitems", handlers.ViewItems).Methods("GET")
 	router.HandleFunc("/order/create", handlers.CreateOrder).Methods("POST")
 	router.HandleFunc("/order/myorders", handlers.GetUserOrders).Methods("GET")
 	router.HandleFunc("/order/view", handlers.ViewUserOrderDetails).Methods("GET")
 
 	// courier routes
 	router.HandleFunc("/order/assigned", handlers.ViewAssignedOrders).Methods("GET")
+	router.HandleFunc("/order/updatestatus", handlers.UpdateOrderStatus).Methods("PUT")
 
 	//admin routes
 	router.HandleFunc("/order/viewall", handlers.ViewAllOrders).Methods("GET")
@@ -60,9 +63,34 @@ func main() {
 		{ID: "5", Name: "Mouse", Quantity: 30},
 	}
 
+	pass, _ := bcrypt.GenerateFromPassword([]byte("admin"), bcrypt.DefaultCost)
+	// Create a default admin user
+	user := models.User{
+		ID:       1,
+		Name:     "admin",
+		Email:    "admin@gmail.com",
+		Password: string(pass),
+		Role:     "admin",
+		Phone:    "0123456789",
+	}
+
+	//check if user already exists
+	var existingUser models.User
+	result := database.DB.Where("id = ?", user.ID).First(&existingUser)
+	if result.RowsAffected == 0 {
+		// User does not exist, insert it
+		if err := database.DB.Create(&user).Error; err != nil {
+			log.Printf("Failed to insert user : %v", err)
+		} else {
+			log.Println("Inserted user")
+		}
+	} else {
+		log.Println("User already loaded in DB")
+	}
+
 	// Check if the item already exists in the database
 	var existingItem models.Item
-	result := database.DB.Where("id = ?", items[0].ID).First(&existingItem)
+	result = database.DB.Where("id = ?", items[0].ID).First(&existingItem)
 
 	if result.RowsAffected == 0 {
 		// Item does not exist, insert it
