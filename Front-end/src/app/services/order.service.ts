@@ -20,6 +20,10 @@ export class OrderService {
     });
   }
 
+  getItems(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/items`);
+  }
+
   submitOrder(orderDetails: any): Observable<any> {
     const token = localStorage.getItem('token');
     console.log('Order Details:', orderDetails);

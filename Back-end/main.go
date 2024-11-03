@@ -40,6 +40,7 @@ func main() {
 	router.HandleFunc("/order/create", handlers.CreateOrder).Methods("POST")
 	router.HandleFunc("/order/myorders", handlers.GetUserOrders).Methods("GET")
 	router.HandleFunc("/order/view", handlers.ViewUserOrderDetails).Methods("GET")
+	router.HandleFunc("/items", handlers.ViewItems).Methods("GET")
 
 	// courier routes
 	router.HandleFunc("/order/assigned", handlers.ViewAssignedOrders).Methods("GET")

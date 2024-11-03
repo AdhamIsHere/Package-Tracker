@@ -23,15 +23,6 @@ func IsSeller(req *http.Request) bool {
 	return false
 }
 
-func ViewItems(writer http.ResponseWriter, req *http.Request) {
-	var items []models.Item
-	if err := database.DB.Find(&items).Error; err != nil {
-		http.Error(writer, "Could not get items "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-	json.NewEncoder(writer).Encode(items)
-}
-
 func CreateOrder(writer http.ResponseWriter, req *http.Request) {
 	if !IsSeller(req) {
 		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
