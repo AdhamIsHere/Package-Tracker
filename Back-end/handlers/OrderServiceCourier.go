@@ -40,14 +40,12 @@ func ViewAssignedOrders(writer http.ResponseWriter, req *http.Request) {
 }
 
 func UpdateOrderStatus(writer http.ResponseWriter, req *http.Request) {
-
 	if !IsCourier(req) {
 		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
 
 	status := req.URL.Query().Get("status")
-
 	orderID := req.URL.Query().Get("id")
 	if orderID == "" {
 		http.Error(writer, "Order ID is required", http.StatusBadRequest)
@@ -70,6 +68,17 @@ func UpdateOrderStatus(writer http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	courierID, err := GetIDFromToken(req)
+	if err != nil {
+		http.Error(writer, "Invalid token", http.StatusBadRequest)
+		return
+	}
+
+	if order.CourierID == nil || *order.CourierID != courierID {
+		http.Error(writer, "Unauthorized: You are not assigned to this order", http.StatusUnauthorized)
+		return
+	}
+
 	order.Status = status
 	if err := database.DB.Save(&order).Error; err != nil {
 		http.Error(writer, "Could not update order status", http.StatusInternalServerError)
@@ -77,6 +86,6 @@ func UpdateOrderStatus(writer http.ResponseWriter, req *http.Request) {
 	}
 
 	writer.WriteHeader(http.StatusOK)
-	msg := "Order no." + string(order.ID) + " status updated to " + status
+	msg := "Order no." + strconv.Itoa(order.ID) + " status updated to " + status
 	json.NewEncoder(writer).Encode(map[string]string{"message": msg})
 }

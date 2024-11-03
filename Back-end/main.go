@@ -36,7 +36,6 @@ func main() {
 	router.HandleFunc("/register", handlers.RegisterUser).Methods("POST")
 	router.HandleFunc("/login", handlers.Login).Methods("POST")
 	router.HandleFunc("/logout", handlers.Logout).Methods("POST")
-	router.HandleFunc("/viewitems", handlers.ViewItems).Methods("GET")
 	router.HandleFunc("/order/create", handlers.CreateOrder).Methods("POST")
 	router.HandleFunc("/order/myorders", handlers.GetUserOrders).Methods("GET")
 	router.HandleFunc("/order/view", handlers.ViewUserOrderDetails).Methods("GET")
@@ -50,6 +49,7 @@ func main() {
 	router.HandleFunc("/order/viewall", handlers.ViewAllOrders).Methods("GET")
 	router.HandleFunc("/order/assign", handlers.AssignOrder).Methods("PUT")
 	router.HandleFunc("/order/delete", handlers.DeleteOrder).Methods("DELETE")
+	router.HandleFunc("/order/update", handlers.UpdateOrderDetails).Methods("PUT")
 
 	// Apply the CORS middleware to the router
 	corsRouter := enableCORS(router)

@@ -170,33 +170,32 @@ func UpdateOrderDetails(writer http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	// Get the order
 	var order models.Order
 	if err := database.DB.First(&order, id).Error; err != nil {
 		http.Error(writer, "Order not found", http.StatusNotFound)
 		return
 	}
 
-	var newOrder models.Order
-	err = json.NewDecoder(req.Body).Decode(&newOrder)
-	if err != nil {
-		http.Error(writer, "Invalid request payload", http.StatusBadRequest)
+	// Decode the request body
+	var updatedOrder models.Order
+	if err := json.NewDecoder(req.Body).Decode(&updatedOrder); err != nil {
+		http.Error(writer, "Could not decode request body", http.StatusBadRequest)
 		return
 	}
 
-	// Update the order details
-	//order.SellerID = newOrder.SellerID
-	order.CourierID = newOrder.CourierID
-	order.PickupLocation = newOrder.PickupLocation
-	order.DropOffLocation = newOrder.DropOffLocation
-	order.DeliveryTime = newOrder.DeliveryTime
-	order.Status = newOrder.Status
-	order.Items = newOrder.Items
+	// Update the order
+	order.PickupLocation = updatedOrder.PickupLocation
+	order.DropOffLocation = updatedOrder.DropOffLocation
+	order.DeliveryTime = updatedOrder.DeliveryTime
+	order.Status = updatedOrder.Status
+	order.Items = updatedOrder.Items
 
 	if err := database.DB.Save(&order).Error; err != nil {
-		http.Error(writer, "Could not update order details", http.StatusInternalServerError)
+		http.Error(writer, "Could not update order", http.StatusInternalServerError)
 		return
 	}
 
 	writer.WriteHeader(http.StatusOK)
-	json.NewEncoder(writer).Encode(map[string]string{"message": "Order details updated successfully"})
+	json.NewEncoder(writer).Encode(map[string]string{"message": "Order updated successfully"})
 }
