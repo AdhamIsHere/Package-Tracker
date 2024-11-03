@@ -36,8 +36,19 @@ export class OrderService {
   }
 
   getOrderById(orderId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${orderId}`);
+    const token = localStorage.getItem('token');
+    return this.http.get<any>(`${this.apiUrl}/order/view?id=${orderId}`,{headers: {
+        Authorization: `Bearer ${token}`
+      }});
   }
 
+  cancelOrder(orderId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http.delete<any>(`${this.apiUrl}/order/delete?id=${orderId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
 
 }

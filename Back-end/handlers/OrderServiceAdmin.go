@@ -40,6 +40,11 @@ func DeleteOrder(writer http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	if !IsSeller(req) {
+		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
 	orderID := req.URL.Query().Get("id")
 	if orderID == "" {
 		http.Error(writer, "Order ID is required", http.StatusBadRequest)
@@ -64,6 +69,11 @@ func DeleteOrder(writer http.ResponseWriter, req *http.Request) {
 	if err := tx.Preload("Items").First(&order, id).Error; err != nil {
 		tx.Rollback()
 		http.Error(writer, "Order not found", http.StatusNotFound)
+		return
+	}
+	if order.Status != "pending" && !IsSeller(req) {
+		tx.Rollback()
+		http.Error(writer, "Order cannot be deleted", http.StatusBadRequest)
 		return
 	}
 

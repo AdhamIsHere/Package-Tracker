@@ -12,25 +12,23 @@
           <th>Order ID</th>
           <th>Seller ID</th>
           <th>Courier ID</th>
-          <th>Pickup Location</th>
-          <th>Drop-Off Location</th>
-          <th>Delivery Time</th>
+          <th>Number of Items</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let order of orders">
-          <td>{{ order.id }}</td>
+          <td>{{ order.order_id }}</td>
           <td>{{ order.seller_id }}</td>
-          <td>{{ order.courier_id }}</td>
-          <td>{{ order.pickup_location }}</td>
-          <td>{{ order.drop_off_location }}</td>
-          <td>{{ order.delivery_time }}</td>
+          <td *ngIf="order.courier_id != null ">{{ order.courier_id }}</td>
+          <td *ngIf="order.courier_id == null ">Not Assigned</td>
+          <td>{{ order.number_of_items }}</td>
           <td>{{ order.status }}</td>
           <td>
-            
-            <button class="btn btn-info" [routerLink]="['/order-details', order.id]">Details</button>
+
+            <button class="btn btn-info me-1" [routerLink]="['/order-details', order.order_id]">Details</button>
+            <button *ngIf="order.status == 'pending'" class="btn btn-danger ms-1" (click)="cancelOrder(order.order_id)">Cancel</button>
           </td>
         </tr>
       </tbody>

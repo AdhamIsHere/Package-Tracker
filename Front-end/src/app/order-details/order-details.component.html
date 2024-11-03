@@ -5,9 +5,11 @@
     <div *ngIf="orderDetails">
       <p><strong>Order ID:</strong> {{ orderDetails.id }}</p>
       <p><strong>Seller ID:</strong> {{ orderDetails.seller_id }}</p>
-      <p><strong>Courier ID:</strong> {{ orderDetails.courier_id }}</p>
+      <p *ngIf="orderDetails.courier_id != null"><strong>Courier ID: </strong> {{ orderDetails.courier_id }}</p>
+      <p *ngIf="orderDetails.courier_id == null"><strong>Courier ID: </strong>Not Assigned</p>
+
       <p><strong>Pickup Location:</strong> {{ orderDetails.pickup_location }}</p>
-      <p><strong>Drop-Off Location:</strong> {{ orderDetails.drop_off_location }}</p>
+      <p><strong>Drop-Off Location:</strong> {{ orderDetails.dropoff_location }}</p>
       <p><strong>Delivery Time:</strong> {{ orderDetails.delivery_time }}</p>
       <p><strong>Status:</strong> {{ orderDetails.status }}</p>
 

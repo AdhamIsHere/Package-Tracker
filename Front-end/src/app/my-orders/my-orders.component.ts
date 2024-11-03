@@ -15,6 +15,17 @@ export class MyOrdersComponent implements OnInit {
   ngOnInit(): void {
     this.loadOrders();
   }
+  cancelOrder(orderId: number): void {
+    this.orderService.cancelOrder(orderId).subscribe(
+      data => {
+        this.successMessage = 'Order cancelled successfully';
+        this.loadOrders();
+      },
+      error => {
+        console.error('Error cancelling order', error);
+      }
+    );
+  }
 
   loadOrders(): void {
     this.orderService.getOrders().subscribe(
