@@ -1,3 +1,35 @@
+.custom_container {
+  width: 75%;
+}
 
 
 
+.custom_ul {
+  margin-left: 5em;
+}
+
+.custom_li {
+  margin-inline: 6em;
+  padding: 0.3em;
+  border-radius: 0.5em;
+  transition: all 1s;
+  background-color: black;
+}
+
+.custom_a {
+  color: white;
+  transition: all 1s;
+}
+
+.custom_li:hover {
+  background-color: white;
+}
+
+.custom_li:hover .custom_a { /* Corrected from .customer_a to .custom_a */
+  color: black;
+}
+
+.page_container
+{
+  height: 100vh;
+}

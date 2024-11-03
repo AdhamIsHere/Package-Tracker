@@ -1,25 +1,24 @@
 <div class="navcontainer bg-primary">
   <nav class="navbar navbar-expand-lg navbar-light bg-primary custom_container m-auto">
-    <div class="container-fluid w-75">
-      <a class="navbar-brand bg-primary-subtle p-2 rounded" href="#">Package-tracker</a>
+    <div class="container-fluid">
+      <a class="navbar-brand bg-danger text-white p-2 rounded" href="#">Package-tracker</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav w-100">
-          <li class="nav-item fw-semibold">
-            <a class="nav-link" aria-current="page" routerLink="/home">Home</a>
+        <ul class="navbar-nav custom_ul">
+          <li class="nav-item custom_li">
+            <a class="nav-link fw-bold custom_a" aria-current="page" routerLink="/home">Home</a>
           </li>
-          <li class="nav-item fw-semibold">
-            <a class="nav-link" routerLink="/order-page">Order Page</a>
+          <li class="nav-item custom_li">
+            <a class="nav-link fw-bold custom_a" routerLink="/order-page">Order Page</a>
           </li>
-          <li class="nav-item fw-semibold">
-            <a class="nav-link" routerLink="/my-orders">My Orders</a>
+          <li class="nav-item custom_li">
+            <a class="nav-link fw-bold custom_a" routerLink="/my-orders">My Orders</a>
           </li>
-          <li class="nav-item ms-auto">
-            <button class="btn btn-danger" (click)="logout()">Logout</button>
-          </li>
+          <li class="nav-item custom_li">
+            <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
         </ul>
       </div>
     </div>
