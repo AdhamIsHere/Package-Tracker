@@ -13,6 +13,7 @@ import { SplashScreenComponent } from './splash-screen/splash-screen.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { OrderPageComponent } from './order-page/order-page.component';
 import { MyordersComponent } from './myorders/myorders.component';
+import { MyOrdersComponent } from './my-orders/my-orders.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { MyordersComponent } from './myorders/myorders.component';
     SplashScreenComponent,
     HomePageComponent,
     OrderPageComponent,
-    MyordersComponent
+    MyordersComponent,
+    MyOrdersComponent
   ],
   imports: [
     BrowserModule,

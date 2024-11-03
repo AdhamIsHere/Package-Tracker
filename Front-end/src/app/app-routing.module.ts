@@ -6,6 +6,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { OrderPageComponent } from './order-page/order-page.component';
 import { MyordersComponent } from './myorders/myorders.component';
+import { MyOrdersComponent } from './my-orders/my-orders.component';
 
 const routes: Routes = [
   { path: '', component: SplashScreenComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path:'home',component: HomePageComponent},
   {path:'order-page',component:OrderPageComponent},
   {path:'myorders',component:MyordersComponent},
+  {path:'my-orders',component:MyOrdersComponent}
 ];
 
 @NgModule({
