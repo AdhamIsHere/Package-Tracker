@@ -12,21 +12,27 @@
           <th scope="col">Order ID</th>
           <th scope="col">Seller ID</th>
           <th scope="col">Courier ID</th>
-          <th scope="col">Pickup Location</th>
-          <th scope="col">Drop-Off Location</th>
-          <th scope="col">Delivery Time</th>
+          <th scope="col">Number of Items</th>
           <th scope="col">Status</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let order of orders">
-          <td>{{ order.id }}</td>
+<!--          <td>{{ order.id }}</td>-->
+<!--          <td>{{ order.seller_id }}</td>-->
+<!--          <td>{{ order.courier_id }}</td>-->
+<!--          <td>{{ order.pickup_location }}</td>-->
+<!--          <td>{{ order.drop_off_location }}</td>-->
+<!--          <td>{{ order.delivery_time }}</td>-->
+<!--          <td>{{ order.status }}</td>-->
+          <td>{{ order.order_id }}</td>
           <td>{{ order.seller_id }}</td>
-          <td>{{ order.courier_id }}</td>
-          <td>{{ order.pickup_location }}</td>
-          <td>{{ order.drop_off_location }}</td>
-          <td>{{ order.delivery_time }}</td>
+          <td *ngIf="order.courier_id != null">{{ order.courier_id }}</td>
+          <td *ngIf="order.courier_id == null">Not Assigned</td>
+          <td>{{ order.number_of_items }}</td>
           <td>{{ order.status }}</td>
+
+
         </tr>
       </tbody>
     </table>

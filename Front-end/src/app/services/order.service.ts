@@ -13,7 +13,7 @@ export class OrderService {
   getOrders(): Observable<any[]> {
     // add token from local storage to the request header
     const token = localStorage.getItem('token');
-    return this.http.get<any[]>(`${this.apiUrl}/order`, {
+    return this.http.get<any[]>(`${this.apiUrl}/order/myorders`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

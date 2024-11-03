@@ -38,6 +38,7 @@ export class OrderPageComponent implements OnInit {
     this.orderService.getOrders().subscribe(
       data => {
         this.orders = data;
+        console.log('Orders:', this.orders);
       },
       error => {
         console.error('Error fetching orders', error);

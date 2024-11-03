@@ -103,10 +103,11 @@ func GetUserOrders(writer http.ResponseWriter, req *http.Request) {
 	}
 
 	type OrderSummary struct {
-		ID     int64  `json:"order_id"`
-		UserID int    `json:"seller_id"`
-		Status string `json:"status"`
-		Number int    `json:"number_of_items"`
+		ID        int64  `json:"order_id"`
+		UserID    int    `json:"seller_id"`
+		CourierID *int   `json:"courier_id"`
+		Status    string `json:"status"`
+		Number    int    `json:"number_of_items"`
 	}
 
 	if len(orders) == 0 {
@@ -118,10 +119,11 @@ func GetUserOrders(writer http.ResponseWriter, req *http.Request) {
 	var orderSummaries []OrderSummary
 	for _, order := range orders {
 		orderSummaries = append(orderSummaries, OrderSummary{
-			ID:     int64(order.ID),
-			UserID: order.SellerID,
-			Status: order.Status,
-			Number: len(order.Items),
+			ID:        int64(order.ID),
+			UserID:    order.SellerID,
+			CourierID: order.CourierID,
+			Status:    order.Status,
+			Number:    len(order.Items),
 		})
 	}
 

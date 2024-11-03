@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class HomePageComponent {
 
+  logout(): void {
+    localStorage.removeItem('token');
+    window.location.href = '/';
+  }
 }
