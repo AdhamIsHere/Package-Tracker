@@ -67,7 +67,7 @@ func CreateOrder(writer http.ResponseWriter, req *http.Request) {
 	}
 
 	// ------------------------------------
-	if order.DeliveryTime.IsZero() {
+	if order.DeliveryTime == "" {
 		http.Error(writer, "Delivery time is required", http.StatusBadRequest)
 		return
 	}

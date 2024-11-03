@@ -11,11 +11,24 @@ export class OrderService {
   constructor(private http: HttpClient) {}
 
   getOrders(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+    // add token from local storage to the request header
+    const token = localStorage.getItem('token');
+    return this.http.get<any[]>(`${this.apiUrl}/order`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   }
 
   submitOrder(orderDetails: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/orders`, orderDetails);
+    const token = localStorage.getItem('token');
+    console.log('Order Details:', orderDetails);
+    console.log('Token:', token);
+    return this.http.post<any>(`${this.apiUrl}/order/create`, orderDetails, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   }
 
 

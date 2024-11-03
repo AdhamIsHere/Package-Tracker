@@ -9,6 +9,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -28,8 +29,9 @@ type Claims struct {
 // function to get id from token
 func GetIDFromToken(req *http.Request) (int, error) {
 	// Get the user ID from the token
-	cookie, _ := req.Cookie("token")
-	claims, err := ParseToken(cookie)
+	token := req.Header.Get("Authorization")
+	token = strings.TrimPrefix(token, "Bearer ")
+	claims, err := ParseToken(token)
 	if err != nil {
 		return 0, err
 	}
@@ -37,16 +39,22 @@ func GetIDFromToken(req *http.Request) (int, error) {
 	return id, nil
 }
 
-func ParseToken(cookie *http.Cookie) (*Claims, error) {
+func ParseToken(token string) (*Claims, error) {
+
+	if token == "" {
+		return nil, errors.New("token value is empty")
+	}
+
 	claims := &Claims{}
-	token, err := jwt.ParseWithClaims(cookie.Value, claims, func(token *jwt.Token) (interface{}, error) {
-		return jwtKey, nil
+	parsedToken, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
+		print("Token in parse: ", token)
+		return jwtKey, nil // Ensure `jwtKey` is defined and non-nil.
 	})
 	if err != nil {
 		return nil, err
 	}
-	if !token.Valid {
-		return nil, errors.New("Invalid token")
+	if !parsedToken.Valid {
+		return nil, errors.New("invalid token")
 	}
 	return claims, nil
 }
@@ -55,6 +63,7 @@ func ParseToken(cookie *http.Cookie) (*Claims, error) {
 func GetRoleFromID(id int) (string, error) {
 	var user models.User
 	if err := database.DB.Where("id = ?", id).First(&user).Error; err != nil {
+		println("Error : ", err.Error())
 		return "", err
 	}
 	return user.Role, nil

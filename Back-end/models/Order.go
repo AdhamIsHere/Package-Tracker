@@ -8,7 +8,7 @@ type Order struct {
 	CourierID       *int      `json:"courier_id"`                // Nullable until courier is assigned
 	PickupLocation  string    `json:"pickup_location" gorm:"not null"`
 	DropOffLocation string    `json:"dropoff_location" gorm:"not null"`
-	DeliveryTime    time.Time `json:"delivery_time"`
+	DeliveryTime    string    `json:"delivery_time"`
 	Status          string    `json:"status" gorm:"default:'pending'"` // Order status
 	CreatedAt       time.Time `json:"created_at"`
 
@@ -18,5 +18,5 @@ type Order struct {
 
 // string representation of the model
 func (o Order) String() string {
-	return "Order ID: " + string(o.ID) + " Seller ID: " + string(o.SellerID) + " Pickup Location: " + o.PickupLocation + " Dropoff Location: " + o.DropOffLocation + " Delivery Time: " + o.DeliveryTime.String() + " Status: " + o.Status + " Created At: " + o.CreatedAt.String()
+	return "Order ID: " + string(o.ID) + " Seller ID: " + string(o.SellerID) + " Pickup Location: " + o.PickupLocation + " Dropoff Location: " + o.DropOffLocation + " Delivery Time: " + o.DeliveryTime + " Status: " + o.Status + " Created At: " + o.CreatedAt.String()
 }
