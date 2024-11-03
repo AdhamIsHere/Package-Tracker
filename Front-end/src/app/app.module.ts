@@ -12,7 +12,6 @@ import { AuthService } from './services/auth.service';
 import { SplashScreenComponent } from './splash-screen/splash-screen.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { OrderPageComponent } from './order-page/order-page.component';
-import { MyordersComponent } from './myorders/myorders.component';
 import { MyOrdersComponent } from './my-orders/my-orders.component';
 
 @NgModule({
@@ -23,7 +22,6 @@ import { MyOrdersComponent } from './my-orders/my-orders.component';
     SplashScreenComponent,
     HomePageComponent,
     OrderPageComponent,
-    MyordersComponent,
     MyOrdersComponent
   ],
   imports: [
