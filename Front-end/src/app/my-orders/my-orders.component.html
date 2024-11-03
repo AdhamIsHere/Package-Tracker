@@ -9,30 +9,29 @@
     <table class="table mt-4">
       <thead>
         <tr>
-          <th scope="col">Order ID</th>
-          <th scope="col">Seller ID</th>
-          <th scope="col">Courier ID</th>
-          <th scope="col">Number of Items</th>
-          <th scope="col">Status</th>
+          <th>Order ID</th>
+          <th>Seller ID</th>
+          <th>Courier ID</th>
+          <th>Pickup Location</th>
+          <th>Drop-Off Location</th>
+          <th>Delivery Time</th>
+          <th>Status</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let order of orders">
-<!--          <td>{{ order.id }}</td>-->
-<!--          <td>{{ order.seller_id }}</td>-->
-<!--          <td>{{ order.courier_id }}</td>-->
-<!--          <td>{{ order.pickup_location }}</td>-->
-<!--          <td>{{ order.drop_off_location }}</td>-->
-<!--          <td>{{ order.delivery_time }}</td>-->
-<!--          <td>{{ order.status }}</td>-->
-          <td>{{ order.order_id }}</td>
+          <td>{{ order.id }}</td>
           <td>{{ order.seller_id }}</td>
-          <td *ngIf="order.courier_id != null">{{ order.courier_id }}</td>
-          <td *ngIf="order.courier_id == null">Not Assigned</td>
-          <td>{{ order.number_of_items }}</td>
+          <td>{{ order.courier_id }}</td>
+          <td>{{ order.pickup_location }}</td>
+          <td>{{ order.drop_off_location }}</td>
+          <td>{{ order.delivery_time }}</td>
           <td>{{ order.status }}</td>
-
-
+          <td>
+            
+            <button class="btn btn-info" [routerLink]="['/order-details', order.id]">Details</button>
+          </td>
         </tr>
       </tbody>
     </table>

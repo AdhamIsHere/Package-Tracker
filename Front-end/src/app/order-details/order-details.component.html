@@ -1,0 +1,22 @@
+<div class="custom-container d-flex justify-content-center align-items-center">
+  <div class="custom-card bg-light m-auto p-4">
+    <h2 class="title fw-bold text-center">Order Details</h2>
+
+    <div *ngIf="orderDetails">
+      <p><strong>Order ID:</strong> {{ orderDetails.id }}</p>
+      <p><strong>Seller ID:</strong> {{ orderDetails.seller_id }}</p>
+      <p><strong>Courier ID:</strong> {{ orderDetails.courier_id }}</p>
+      <p><strong>Pickup Location:</strong> {{ orderDetails.pickup_location }}</p>
+      <p><strong>Drop-Off Location:</strong> {{ orderDetails.drop_off_location }}</p>
+      <p><strong>Delivery Time:</strong> {{ orderDetails.delivery_time }}</p>
+      <p><strong>Status:</strong> {{ orderDetails.status }}</p>
+
+      <h3 class="mt-4">Items</h3>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let item of orderDetails.items">
+          <strong>{{ item.name }}</strong> - Quantity: {{ item.quantity }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -35,5 +35,9 @@ export class OrderService {
     });
   }
 
+  getOrderById(orderId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${orderId}`);
+  }
+
 
 }
