@@ -17,6 +17,15 @@
         <label for="location">Location</label>
         <input type="text" id="location" class="form-control" [(ngModel)]="deliveryLocation" name="deliveryLocation" placeholder="Enter delivery location" required>
       </div>
+      <div class="form-group">
+        <label>Package Details</label>
+        <div *ngFor="let item of items">
+          <label>
+            <input type="checkbox" [(ngModel)]="item.selected" />
+            {{ item.name }}
+          </label>
+        </div>
+      </div>
 
       <div class="form-group">
         <label for="delivery">Delivery Time</label>
