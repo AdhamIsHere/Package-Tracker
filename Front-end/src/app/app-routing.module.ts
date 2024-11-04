@@ -23,7 +23,7 @@ const routes: Routes = [
   { path: 'order-details/:orderId', component: OrderDetailsComponent },
   {path:'home-admin',component:HomeAdminnComponent},
   {path:'orders-admin',component:OrdersAdminComponent},
-  {path:'admin-assign',component:AdminAssignComponent},
+  {path:'admin-assign/:orderId',component:AdminAssignComponent},
   {path:'admin-delete',component:AdminDeleteComponent},
   {path:'admin-update',component:AdminUpdateComponent}
 ];

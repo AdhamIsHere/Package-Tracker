@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../services/order.service';
 import { UserService } from '../services/user.service';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-admin-assign',
@@ -15,14 +16,18 @@ export class AdminAssignComponent implements OnInit {
   successMessage: string = '';
   errorMessage: string = '';
 
-  constructor(private orderService: OrderService, private userService: UserService) {}
+  constructor(private orderService: OrderService, private userService: UserService,private route: ActivatedRoute) {
+
+  }
 
   ngOnInit(): void {
     this.loadOrders();
     this.loadCouriers();
-  }
-
-  assignOrder(orderId: number, courierId: number): void {
+    this.route.paramMap.subscribe(params => {
+      this.orderId = Number(params.get('orderId'));
+    });
+}
+    assignOrder(orderId: number, courierId: number): void {
     this.orderService.assignOrder(orderId, courierId).subscribe(
       data => {
         this.successMessage = 'Order assigned successfully';

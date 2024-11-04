@@ -1,14 +1,9 @@
 <div class="d-flex justify-content-center align-items-center vh-100 vw-100">
   <div class=" bg-light m-auto p-5 rounded">
+    <div *ngIf="errorMessage" class="alert alert-danger error-message text-center mt-4">{{ errorMessage }}</div>
     <h2 class="title fw-bold text-center mb-5">Assign Order</h2>
-
-    <div class="form-group m-1">
-      <label for="order_id">Order ID</label>
-      <select class="form-control" id="order_id" [(ngModel)]="orderId">
-        <option *ngFor="let order of orders" [value]="order.id">{{ order.id }}</option>
-      </select>
-    </div>
-
+    <div *ngIf="successMessage" class="alert alert-success text-center">{{ successMessage }}</div>
+    <h3>Order ID: {{ orderId }}</h3>
     <div class="form-group m-1">
       <label for="courier_id">Courier</label>
       <select class="form-control" id="courier_id" [(ngModel)]="courierId">
