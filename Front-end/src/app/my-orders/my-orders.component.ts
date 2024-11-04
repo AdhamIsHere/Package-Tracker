@@ -9,6 +9,7 @@ import { OrderService } from '../services/order.service';
 export class MyOrdersComponent implements OnInit {
   orders: any[] = []; // Array to hold retrieved orders
   successMessage: string = '';
+  errorMessage: string = '';
 
   constructor(private orderService: OrderService) {}
 
@@ -22,6 +23,7 @@ export class MyOrdersComponent implements OnInit {
         this.loadOrders();
       },
       error => {
+        this.errorMessage = 'Error cancelling order';
         console.error('Error cancelling order', error);
       }
     );
@@ -33,6 +35,7 @@ export class MyOrdersComponent implements OnInit {
         this.orders = data;
       },
       error => {
+        this.errorMessage = 'Error fetching orders';
         console.error('Error fetching orders', error);
       }
     );

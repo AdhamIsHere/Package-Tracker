@@ -5,7 +5,9 @@
     <div *ngIf="successMessage" class="alert alert-success text-center">
       {{ successMessage }}
     </div>
-
+  <div *ngIf="errorMessage" class="alert alert-danger text-center">
+    {{ errorMessage }}
+  </div>
     <table class="table mt-4">
       <thead>
         <tr>

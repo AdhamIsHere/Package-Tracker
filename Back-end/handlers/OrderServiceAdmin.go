@@ -35,12 +35,7 @@ func ViewAllOrders(writer http.ResponseWriter, req *http.Request) {
 }
 
 func DeleteOrder(writer http.ResponseWriter, req *http.Request) {
-	if !IsAdmin(req) {
-		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
-		return
-	}
-
-	if !IsSeller(req) {
+	if !IsAdmin(req) && !IsSeller(req) {
 		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
 		return
 	}

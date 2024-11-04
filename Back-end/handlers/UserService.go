@@ -47,7 +47,7 @@ func ParseToken(token string) (*Claims, error) {
 
 	claims := &Claims{}
 	parsedToken, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
-		print("Token in parse: ", token)
+		println("Token in parse: ", token)
 		return jwtKey, nil // Ensure `jwtKey` is defined and non-nil.
 	})
 	if err != nil {
