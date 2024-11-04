@@ -21,6 +21,7 @@ import { AdminUpdateComponent } from './admin-update/admin-update.component';
 import { AdminDeleteComponent } from './admin-delete/admin-delete.component';
 import { CourierUpdateComponent } from './courier-update/courier-update.component';
 import { CourierViewComponent } from './courier-view/courier-view.component';
+import { CourierHomeComponent } from './courier-home/courier-home.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { CourierViewComponent } from './courier-view/courier-view.component';
     AdminDeleteComponent,
     CourierUpdateComponent,
     CourierViewComponent,
+    CourierHomeComponent,
 
   ],
   imports: [
