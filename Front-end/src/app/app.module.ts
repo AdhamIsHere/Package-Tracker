@@ -14,6 +14,10 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { OrderPageComponent } from './order-page/order-page.component';
 import { MyOrdersComponent } from './my-orders/my-orders.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
+import { CourierAssignComponent } from './courier-assign/courier-assign.component';
+import { CourierUpdateComponent } from './courier-update/courier-update.component';
+import { AdminAssignComponent } from './admin-assign/admin-assign.component';
+import { AdminUpdateComponent } from './admin-update/admin-update.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,11 @@ import { OrderDetailsComponent } from './order-details/order-details.component';
     HomePageComponent,
     OrderPageComponent,
     MyOrdersComponent,
-    OrderDetailsComponent
+    OrderDetailsComponent,
+    CourierAssignComponent,
+    CourierUpdateComponent,
+    AdminAssignComponent,
+    AdminUpdateComponent
   ],
   imports: [
     BrowserModule,
