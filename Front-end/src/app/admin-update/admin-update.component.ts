@@ -12,10 +12,10 @@ export class AdminUpdateComponent implements OnInit {
   pickupLocation: string = '';
   deliveryLocation: string = '';
   deliveryTime: string = '';
-  selectedItems: any[] = []; 
-  items: any[] = [];  
+  selectedItems: any[] = [];
+  items: any[] = [];
   successMessage: string = '';
-  errorMessage: string = ''; 
+  errorMessage: string = '';
   orderId: number = 0;
 
   constructor(
@@ -31,7 +31,24 @@ export class AdminUpdateComponent implements OnInit {
     });
   }
   loadOrders() {
-    throw new Error('Method not implemented.');
+    this.orderService.getAllOrders().subscribe(
+      data => {
+        // find order by id
+        let order = data.find((order) => order.id == this.orderId);
+        if (order) {
+          this.pickupLocation = order.pickup_location;
+          this.deliveryLocation = order.delivery_location;
+          this.deliveryTime = order.delivery_time;
+          this.selectedItems = order.items;
+        } else {
+          this.errorMessage = 'Order not found';
+        }
+      },
+      error => {
+        this.errorMessage = 'Error fetching order';
+        console.error('Error fetching orders', error);
+      }
+    );
   }
 
   // Load order details along with available items for selection
