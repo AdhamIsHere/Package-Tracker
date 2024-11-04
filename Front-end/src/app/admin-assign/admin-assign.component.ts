@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {OrderService} from "../services/order.service";
+import { Component, OnInit } from '@angular/core';
+import { OrderService } from '../services/order.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-admin-assign',
@@ -8,15 +9,21 @@ import {OrderService} from "../services/order.service";
 })
 export class AdminAssignComponent implements OnInit {
   orders: any[] = [];
+  couriers: any[] = [];
+  orderId: number = 0;
+  courierId: number = 0;
   successMessage: string = '';
   errorMessage: string = '';
-  constructor(private orderService: OrderService) {}
+
+  constructor(private orderService: OrderService, private userService: UserService) {}
 
   ngOnInit(): void {
     this.loadOrders();
+    this.loadCouriers();
   }
-  assignOrder(orderId: number): void {
-    this.orderService.assignOrder(orderId).subscribe(
+
+  assignOrder(orderId: number, courierId: number): void {
+    this.orderService.assignOrder(orderId, courierId).subscribe(
       data => {
         this.successMessage = 'Order assigned successfully';
         this.loadOrders();
@@ -27,6 +34,7 @@ export class AdminAssignComponent implements OnInit {
       }
     );
   }
+
   loadOrders(): void {
     this.orderService.getAllOrders().subscribe(
       data => {
@@ -35,6 +43,18 @@ export class AdminAssignComponent implements OnInit {
       error => {
         this.errorMessage = 'Error fetching orders';
         console.error('Error fetching orders', error);
+      }
+    );
+  }
+
+  loadCouriers(): void {
+    this.userService.getAllCouriers().subscribe(
+      data => {
+        this.couriers = data;
+      },
+      error => {
+        this.errorMessage = 'Error fetching couriers';
+        console.error('Error fetching couriers', error);
       }
     );
   }
