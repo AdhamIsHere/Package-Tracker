@@ -25,7 +25,7 @@ const routes: Routes = [
   {path:'orders-admin',component:OrdersAdminComponent},
   {path:'admin-assign/:orderId',component:AdminAssignComponent},
   {path:'admin-delete',component:AdminDeleteComponent},
-  {path:'admin-update',component:AdminUpdateComponent}
+  {path:'admin-update/:orderId',component:AdminUpdateComponent}
 ];
 
 @NgModule({

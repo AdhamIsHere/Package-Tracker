@@ -1,16 +1,22 @@
-<div class="d-flex justify-content-center align-items-center vh-100 vw-100">
-  <div class=" bg-light m-auto p-5 rounded">
-    <div *ngIf="errorMessage" class="alert alert-danger error-message text-center mt-4">{{ errorMessage }}</div>
-    <h2 class="title fw-bold text-center mb-5">Assign Order</h2>
-    <div *ngIf="successMessage" class="alert alert-success text-center">{{ successMessage }}</div>
-    <h3>Order ID: {{ orderId }}</h3>
-    <div class="form-group m-1">
-      <label for="courier_id">Courier</label>
+<div class="custom-container d-flex justify-content-center align-items-center">
+  <div class="custom-card bg-light m-auto p-5 rounded" >
+    <div *ngIf="errorMessage" class="alert alert-danger error-message text-center mt-3 mb-4">{{ errorMessage }}</div>
+    
+    <h2 class="title fw-bold text-center mb-4">Assign Order</h2>
+    
+    <div *ngIf="successMessage" class="alert alert-success text-center mb-4">{{ successMessage }}</div>
+    
+    <h5 class="mb-3"><strong>Order ID:</strong> {{ orderId }}</h5>
+    
+    <div class="form-group mb-4">
+      <label for="courier_id" class="form-label"><strong>Courier</strong></label>
       <select class="form-control" id="courier_id" [(ngModel)]="courierId">
         <option *ngFor="let courier of couriers" [value]="courier.id">{{ courier.name }}</option>
       </select>
     </div>
 
-    <button class="btn btn-primary" (click)="assignOrder(orderId, courierId)">Assign Order</button>
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-primary mt-3 px-4" (click)="assignOrder(orderId, courierId)">Assign Order</button>
+    </div>
   </div>
 </div>

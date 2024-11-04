@@ -1,21 +1,20 @@
-<div class="navcontainer bg-primary">
-  <nav class="navbar navbar-expand-lg navbar-light bg-primary custom_container m-auto">
+<div class="navcontainer">
+  <nav class="navbar navbar-expand-lg navbar-light custom_container m-auto">
     <div class="container-fluid">
-      <a class="navbar-brand bg-danger text-white p-2 rounded" href="#">Package-tracker</a>
+      <a class="navbar-brand" href="#">Package-tracker</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav custom_ul">
+        <ul class="navbar-nav ms-auto custom_ul">
           <li class="nav-item custom_li">
-            <a class="nav-link fw-bold custom_a" aria-current="page" routerLink="">Home</a>
+            <a class="nav-link custom_a" aria-current="page" routerLink="">Home</a>
           </li>
           <li class="nav-item custom_li">
-            <a class="nav-link fw-bold custom_a" routerLink="/orders-admin">All Orders</a>
+            <a class="nav-link custom_a" routerLink="/orders-admin">All Orders</a>
           </li>
-          
-          <li class="nav-item custom_li">
+          <li class="nav-item">
             <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
           </li>
         </ul>
@@ -24,4 +23,8 @@
   </nav>
 </div>
 
-<div class="vh-100"></div>
+
+
+<div class="background_image">
+  <img src="assets/images/background.webp" alt="background" class="img-fluid" height="100%" width="100%">
+</div>

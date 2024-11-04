@@ -61,7 +61,7 @@ export class OrderService {
   }
 
   //admin update order
-  updateOrder(orderDetails: any): Observable<any> {
+  updateOrder(orderDetails: any, order: any): Observable<any> {
     const token = localStorage.getItem('token');
     return this.http.put<any>(`${this.apiUrl}/order/update`, orderDetails, {
       headers: {
