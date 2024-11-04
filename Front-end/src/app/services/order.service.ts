@@ -71,9 +71,9 @@ export class OrderService {
   }
 
   //admin assign order
-  assignOrder(orderDetails: any): Observable<any> {
+  assignOrder(oid:number,cid:number): Observable<any> {
     const token = localStorage.getItem('token');
-    return this.http.put<any>(`${this.apiUrl}/order/assign`, orderDetails, {
+    return this.http.put<any>(`${this.apiUrl}/order/assign?oid=${oid}&cid=${cid}`,null, {
       headers: {
         Authorization: `Bearer ${token}`
       }

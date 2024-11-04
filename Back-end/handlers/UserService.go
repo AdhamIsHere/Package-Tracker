@@ -66,7 +66,7 @@ func GetRoleFromID(id int) (string, error) {
 		println("Error : ", err.Error())
 		return "", err
 	}
-	println("Role: ",user.Role)
+	println("Role: ", user.Role)
 	return user.Role, nil
 }
 
@@ -172,14 +172,17 @@ func RegisterUser(writer http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(writer).Encode(user)
 }
 
-func Logout(writer http.ResponseWriter, req *http.Request) {
-	// Clear the token cookie by setting its expiration time to the past
-	http.SetCookie(writer, &http.Cookie{
-		Name:    "token",
-		Value:   "",
-		Expires: time.Unix(0, 0),
-	})
+func GetCouriers(writer http.ResponseWriter, req *http.Request) {
+	if !IsAdmin(req) {
+		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
 
+	var users []models.User
+	if err := database.DB.Where("role = ?", "courier").Find(&users).Error; err != nil {
+		http.Error(writer, "Could not get couriers", http.StatusInternalServerError)
+		return
+	}
 	writer.WriteHeader(http.StatusOK)
-	json.NewEncoder(writer).Encode(map[string]string{"message": "Logged out successfully"})
+	json.NewEncoder(writer).Encode(users)
 }
