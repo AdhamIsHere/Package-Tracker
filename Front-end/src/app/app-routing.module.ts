@@ -7,6 +7,11 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { OrderPageComponent } from './order-page/order-page.component';
 import { MyOrdersComponent } from './my-orders/my-orders.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
+import { HomeAdminnComponent } from './home-adminn/home-adminn.component';
+import { OrdersAdminComponent } from './orders-admin/orders-admin.component';
+import { AdminAssignComponent } from './admin-assign/admin-assign.component';
+import { AdminDeleteComponent } from './admin-delete/admin-delete.component';
+import { AdminUpdateComponent } from './admin-update/admin-update.component';
 
 const routes: Routes = [
   { path: '', component: SplashScreenComponent },
@@ -16,10 +21,15 @@ const routes: Routes = [
   { path: 'order-page', component: OrderPageComponent },
   { path: 'my-orders', component: MyOrdersComponent },
   { path: 'order-details/:orderId', component: OrderDetailsComponent },
+  {path:'home-admin',component:HomeAdminnComponent},
+  {path:'orders-admin',component:OrdersAdminComponent},
+  {path:'admin-assign',component:AdminAssignComponent},
+  {path:'admin-delete',component:AdminDeleteComponent},
+  {path:'admin-update',component:AdminUpdateComponent}
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -51,4 +51,8 @@ export class OrderService {
     });
   }
 
+  getAllOrders(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}`);
+  }
+
 }

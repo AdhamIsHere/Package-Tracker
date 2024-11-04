@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -30,8 +30,16 @@ export class LoginComponent implements OnInit {
       const { email, password } = this.loginForm.value;
       this.authService.login(email, password).subscribe(
         (res: any) => {
-          console.log('Logged in successfully!', res);
-          this.router.navigate(['/home']);
+          if (email === 'admin@gmail.com') { 
+            this.router.navigate(['/home-admin']);
+          } else {
+
+
+            console.log('Logged in successfully!', res);
+            this.router.navigate(['/home']);
+
+          }
+
         },
         (error: any) => {
           this.error = error.error;

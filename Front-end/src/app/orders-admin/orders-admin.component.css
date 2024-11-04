@@ -1,0 +1,30 @@
+.custom-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-card {
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(129, 61, 61, 0.1);
+  width: fit-content;
+  background-color: #fff;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.list-group-item {
+  border: none;
+  padding: 10px 15px;
+  background-color: #f8f9fa;
+}
+
+p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
