@@ -19,6 +19,8 @@ export class OrdersAdminComponent implements OnInit {
         this.orders = data;
       },
       error => {
+        console.log(error);
+
         console.error('Error fetching all orders', error);
       }
     );

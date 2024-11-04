@@ -52,7 +52,11 @@ export class OrderService {
   }
 
   getAllOrders(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}`);
+    const token = localStorage.getItem('token');
+    return this.http.get<any[]>(`${this.apiUrl}/order/viewall`,{headers: {
+      Authorization: `Bearer ${token}`
+    }}
+    );
   }
 
 }

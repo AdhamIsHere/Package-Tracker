@@ -66,6 +66,7 @@ func GetRoleFromID(id int) (string, error) {
 		println("Error : ", err.Error())
 		return "", err
 	}
+	println("Role: ",user.Role)
 	return user.Role, nil
 }
 
