@@ -19,6 +19,8 @@ import { OrdersAdminComponent } from './orders-admin/orders-admin.component';
 import { AdminAssignComponent } from './admin-assign/admin-assign.component';
 import { AdminUpdateComponent } from './admin-update/admin-update.component';
 import { AdminDeleteComponent } from './admin-delete/admin-delete.component';
+import { CourierUpdateComponent } from './courier-update/courier-update.component';
+import { CourierViewComponent } from './courier-view/courier-view.component';
 
 
 @NgModule({
@@ -36,6 +38,8 @@ import { AdminDeleteComponent } from './admin-delete/admin-delete.component';
     AdminAssignComponent,
     AdminUpdateComponent,
     AdminDeleteComponent,
+    CourierUpdateComponent,
+    CourierViewComponent,
 
   ],
   imports: [
