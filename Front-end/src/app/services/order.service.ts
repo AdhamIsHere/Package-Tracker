@@ -51,6 +51,7 @@ export class OrderService {
     });
   }
 
+  //admin view all orders
   getAllOrders(): Observable<any[]> {
     const token = localStorage.getItem('token');
     return this.http.get<any[]>(`${this.apiUrl}/order/viewall`,{headers: {
@@ -58,5 +59,57 @@ export class OrderService {
     }}
     );
   }
+
+  //admin update order
+  updateOrder(orderDetails: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http.put<any>(`${this.apiUrl}/order/update`, orderDetails, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
+  //admin assign order
+  assignOrder(orderDetails: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http.put<any>(`${this.apiUrl}/order/assign`, orderDetails, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
+  //admin delete order
+  deleteOrder(orderId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http.delete<any>(`${this.apiUrl}/order/delete?id=${orderId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
+  //courier view assigned orders
+  getAssignedOrders(): Observable<any[]> {
+    const token = localStorage.getItem('token');
+    return this.http.get<any[]>(`${this.apiUrl}/order/assigned`,{headers: {
+      Authorization: `Bearer ${token}`
+    }}
+    );
+  }
+
+  //courier update order status
+  updateOrderStatus(orderDetails: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http.put<any>(`${this.apiUrl}/order/updatestatus`, orderDetails, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
+
+
 
 }
