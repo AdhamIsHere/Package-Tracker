@@ -10,17 +10,23 @@ export class OrdersAdminComponent implements OnInit {
 
   orders: any[] = [];
   currentOrderIndex: number = 0;
+  successMessage: string = '';
+  errorMessage: string = '';
 
   constructor(private orderService: OrderService) {}
 
   ngOnInit(): void {
-    // Fetch all orders from the service
-    this.orderService.getAllOrders().subscribe(
+    this.loadOrders();
+  }
+
+  loadOrders(): void {
+    this.orderService.getOrders().subscribe(
       data => {
         this.orders = data;
       },
       error => {
-        console.error('Error fetching all orders', error);
+        this.errorMessage = 'Error fetching orders';
+        console.error('Error fetching orders', error);
       }
     );
   }
@@ -39,5 +45,18 @@ export class OrdersAdminComponent implements OnInit {
 
   getCurrentOrder() {
     return this.orders[this.currentOrderIndex];
+  }
+
+  cancelOrder(orderId: number): void {
+    this.orderService.cancelOrder(orderId).subscribe(
+      data => {
+        this.successMessage = 'Order cancelled successfully';
+        this.loadOrders(); 
+      },
+      error => {
+        this.errorMessage = 'Error cancelling order';
+        console.error('Error cancelling order', error);
+      }
+    );
   }
 }
