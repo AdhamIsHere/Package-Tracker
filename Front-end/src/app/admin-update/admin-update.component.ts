@@ -10,7 +10,7 @@ import { OrderService } from "../services/order.service";
 export class AdminUpdateComponent implements OnInit {
   // Order properties
   pickupLocation: string = '';
-  deliveryLocation: string = '';
+  dropoff_location: string = '';
   deliveryTime: string = '';
   selectedItems: any[] = [];
   items: any[] = [];
@@ -37,7 +37,7 @@ export class AdminUpdateComponent implements OnInit {
         let order = data.find((order) => order.id == this.orderId);
         if (order) {
           this.pickupLocation = order.pickup_location;
-          this.deliveryLocation = order.delivery_location;
+          this.dropoff_location = order.dropoff_location;
           this.deliveryTime = order.delivery_time;
           this.selectedItems = order.items;
         } else {
@@ -57,7 +57,7 @@ export class AdminUpdateComponent implements OnInit {
       data => {
         // Assuming data contains 'order' with order details and 'availableItems' with all items
         this.pickupLocation = data.order.pickup_location;
-        this.deliveryLocation = data.order.delivery_location;
+        this.dropoff_location = data.order.dropoff_location;
         this.deliveryTime = data.order.delivery_time;
         this.selectedItems = data.order.items;
         this.items = data.availableItems; // Populate available items for the item selection dropdowns
@@ -85,7 +85,7 @@ export class AdminUpdateComponent implements OnInit {
   submitOrder(): void {
     const updatedOrder = {
       pickup_location: this.pickupLocation,
-      delivery_location: this.deliveryLocation,
+      dropoff_location: this.dropoff_location,
       delivery_time: this.deliveryTime,
       items: this.selectedItems
     };

@@ -190,11 +190,18 @@ func UpdateOrderDetails(writer http.ResponseWriter, req *http.Request) {
 	}
 
 	// Update the order
-	order.PickupLocation = updatedOrder.PickupLocation
-	order.DropOffLocation = updatedOrder.DropOffLocation
-	order.DeliveryTime = updatedOrder.DeliveryTime
-	order.Status = updatedOrder.Status
-	order.Items = updatedOrder.Items
+	if updatedOrder.PickupLocation != "" {
+		order.PickupLocation = updatedOrder.PickupLocation
+	}
+	if updatedOrder.DropOffLocation != "" {
+		order.DropOffLocation = updatedOrder.DropOffLocation
+	}
+	if updatedOrder.DeliveryTime != "" {
+		order.DeliveryTime = updatedOrder.DeliveryTime
+	}
+	if updatedOrder.Items != nil {
+		order.Items = updatedOrder.Items
+	}
 
 	if err := database.DB.Save(&order).Error; err != nil {
 		http.Error(writer, "Could not update order", http.StatusInternalServerError)

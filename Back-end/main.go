@@ -57,11 +57,11 @@ func main() {
 	// Connect to the database
 	database.ConnectDB()
 	items := []models.Item{
-		{ID: "1", Name: "Laptop", Quantity: 10},
-		{ID: "2", Name: "Phone", Quantity: 20},
-		{ID: "3", Name: "Headphones", Quantity: 15},
-		{ID: "4", Name: "Keyboard", Quantity: 25},
-		{ID: "5", Name: "Mouse", Quantity: 30},
+		{ID: "1", Name: "Laptop"},
+		{ID: "2", Name: "Phone"},
+		{ID: "3", Name: "Headphones"},
+		{ID: "4", Name: "Keyboard"},
+		{ID: "5", Name: "Mouse"},
 	}
 
 	pass, _ := bcrypt.GenerateFromPassword([]byte("admin"), bcrypt.DefaultCost)

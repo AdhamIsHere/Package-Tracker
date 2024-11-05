@@ -61,9 +61,9 @@ export class OrderService {
   }
 
   //admin update order
-  updateOrder(orderDetails: any, order: any): Observable<any> {
+  updateOrder(orderId: any, order: any): Observable<any> {
     const token = localStorage.getItem('token');
-    return this.http.put<any>(`${this.apiUrl}/order/update`, orderDetails, {
+    return this.http.put<any>(`${this.apiUrl}/order/update?id=${orderId}`, order, {
       headers: {
         Authorization: `Bearer ${token}`
       }
