@@ -147,6 +147,9 @@ func AssignOrder(writer http.ResponseWriter, req *http.Request) {
 
 	// Assign the order to the courier
 	order.CourierID = &cid
+	if order.Status != "pending" {
+		order.Status = "pending"
+	}
 	if err := database.DB.Save(&order).Error; err != nil {
 		http.Error(writer, "Could not assign order", http.StatusInternalServerError)
 		return

@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class CourierHomeComponent {
 
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    window.location.href = '/';
+  }
 }

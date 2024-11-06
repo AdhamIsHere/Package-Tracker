@@ -43,6 +43,8 @@ func main() {
 	// courier routes
 	router.HandleFunc("/order/assigned", handlers.ViewAssignedOrders).Methods("GET")
 	router.HandleFunc("/order/updatestatus", handlers.UpdateOrderStatus).Methods("PUT")
+	router.HandleFunc("/order/accept", handlers.AcceptOrder).Methods("PUT")
+	router.HandleFunc("/order/decline", handlers.DeclineOrder).Methods("PUT")
 
 	//admin routes
 	router.HandleFunc("/order/viewall", handlers.ViewAllOrders).Methods("GET")

@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 export class OrderService {
   private apiUrl = 'http://localhost:8080';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getOrders(): Observable<any[]> {
     // add token from local storage to the request header
@@ -38,9 +39,11 @@ export class OrderService {
 
   getOrderById(orderId: number): Observable<any> {
     const token = localStorage.getItem('token');
-    return this.http.get<any>(`${this.apiUrl}/order/view?id=${orderId}`,{headers: {
+    return this.http.get<any>(`${this.apiUrl}/order/view?id=${orderId}`, {
+      headers: {
         Authorization: `Bearer ${token}`
-      }});
+      }
+    });
   }
 
   cancelOrder(orderId: number): Observable<any> {
@@ -55,9 +58,11 @@ export class OrderService {
   //admin view all orders
   getAllOrders(): Observable<any[]> {
     const token = localStorage.getItem('token');
-    return this.http.get<any[]>(`${this.apiUrl}/order/viewall`,{headers: {
-      Authorization: `Bearer ${token}`
-    }}
+    return this.http.get<any[]>(`${this.apiUrl}/order/viewall`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
     );
   }
 
@@ -72,9 +77,9 @@ export class OrderService {
   }
 
   //admin assign order
-  assignOrder(oid:number,cid:number): Observable<any> {
+  assignOrder(oid: number, cid: number): Observable<any> {
     const token = localStorage.getItem('token');
-    return this.http.put<any>(`${this.apiUrl}/order/assign?oid=${oid}&cid=${cid}`,null, {
+    return this.http.put<any>(`${this.apiUrl}/order/assign?oid=${oid}&cid=${cid}`, null, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -94,9 +99,11 @@ export class OrderService {
   //courier view assigned orders
   getAssignedOrders(): Observable<any[]> {
     const token = localStorage.getItem('token');
-    return this.http.get<any[]>(`${this.apiUrl}/order/assigned`,{headers: {
-      Authorization: `Bearer ${token}`
-    }}
+    return this.http.get<any[]>(`${this.apiUrl}/order/assigned`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
     );
   }
 
@@ -110,7 +117,22 @@ export class OrderService {
     });
   }
 
+  acceptOrder(orderId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http.put<any>(`${this.apiUrl}/order/accept?oid=${orderId}`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
 
-
+  declineOrder(orderId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http.put<any>(`${this.apiUrl}/order/decline?oid=${orderId}`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
 
 }

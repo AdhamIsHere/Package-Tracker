@@ -35,7 +35,7 @@
 
     <div class="form-group mb-4">
       <label for="courier_id" class="form-label"><strong>Courier</strong></label>
-      <select class="form-control" id="courier_id" [(ngModel)]="courierId">
+      <select class="form-control my-2 border border-2 border-primary-subtle" id="courier_id" [(ngModel)]="courierId">
         <option *ngFor="let courier of couriers" [value]="courier.id">{{ courier.name }}</option>
       </select>
     </div>
