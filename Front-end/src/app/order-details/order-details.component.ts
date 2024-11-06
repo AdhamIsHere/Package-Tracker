@@ -16,6 +16,11 @@ export class OrderDetailsComponent implements OnInit {
     private orderService: OrderService
   ) {}
 
+  logout(): void {
+    localStorage.removeItem('token');
+    window.location.href = '/';
+  }
+
   ngOnInit(): void {
     // Retrieve orderId from route parameters
     this.route.paramMap.subscribe(params => {

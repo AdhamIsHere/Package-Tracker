@@ -10,7 +10,6 @@ import { OrderDetailsComponent } from './order-details/order-details.component';
 import { HomeAdminnComponent } from './home-adminn/home-adminn.component';
 import { OrdersAdminComponent } from './orders-admin/orders-admin.component';
 import { AdminAssignComponent } from './admin-assign/admin-assign.component';
-import { AdminDeleteComponent } from './admin-delete/admin-delete.component';
 import { AdminUpdateComponent } from './admin-update/admin-update.component';
 
 const routes: Routes = [
@@ -24,7 +23,6 @@ const routes: Routes = [
   {path:'home-admin',component:HomeAdminnComponent},
   {path:'orders-admin',component:OrdersAdminComponent},
   {path:'admin-assign/:orderId',component:AdminAssignComponent},
-  {path:'admin-delete',component:AdminDeleteComponent},
   {path:'admin-update/:orderId',component:AdminUpdateComponent}
 ];
 

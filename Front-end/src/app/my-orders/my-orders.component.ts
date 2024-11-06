@@ -40,4 +40,9 @@ export class MyOrdersComponent implements OnInit {
       }
     );
   }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    window.location.href = '/';
+  }
 }

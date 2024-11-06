@@ -19,8 +19,16 @@ export class OrdersAdminComponent implements OnInit {
     this.loadOrders();
   }
 
+  isOrdersEmpty(): boolean {
+    return this.orders.length === 0;
+  }
+  logout(): void {
+    localStorage.removeItem('token');
+    window.location.href = '/';
+  }
+
   loadOrders(): void {
-    this.orderService.getOrders().subscribe(
+    this.orderService.getAllOrders().subscribe(
       data => {
         this.orders = data;
       },
@@ -51,7 +59,7 @@ export class OrdersAdminComponent implements OnInit {
     this.orderService.cancelOrder(orderId).subscribe(
       data => {
         this.successMessage = 'Order cancelled successfully';
-        this.loadOrders(); 
+        this.loadOrders();
       },
       error => {
         this.errorMessage = 'Error cancelling order';

@@ -45,7 +45,10 @@ export class OrderPageComponent implements OnInit {
       }
     );
   }
-
+  logout(): void {
+    localStorage.removeItem('token');
+    window.location.href = '/';
+  }
   addItem(): void {
     this.selectedItems.push({});
   }

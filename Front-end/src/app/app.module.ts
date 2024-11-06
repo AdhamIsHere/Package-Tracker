@@ -18,7 +18,6 @@ import { HomeAdminnComponent } from './home-adminn/home-adminn.component';
 import { OrdersAdminComponent } from './orders-admin/orders-admin.component';
 import { AdminAssignComponent } from './admin-assign/admin-assign.component';
 import { AdminUpdateComponent } from './admin-update/admin-update.component';
-import { AdminDeleteComponent } from './admin-delete/admin-delete.component';
 import { CourierUpdateComponent } from './courier-update/courier-update.component';
 import { CourierViewComponent } from './courier-view/courier-view.component';
 import { CourierHomeComponent } from './courier-home/courier-home.component';
@@ -38,7 +37,6 @@ import { CourierHomeComponent } from './courier-home/courier-home.component';
     OrdersAdminComponent,
     AdminAssignComponent,
     AdminUpdateComponent,
-    AdminDeleteComponent,
     CourierUpdateComponent,
     CourierViewComponent,
     CourierHomeComponent,
