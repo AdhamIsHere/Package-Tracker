@@ -200,7 +200,15 @@ func UpdateOrderDetails(writer http.ResponseWriter, req *http.Request) {
 		order.DeliveryTime = updatedOrder.DeliveryTime
 	}
 	if updatedOrder.Items != nil {
-		order.Items = updatedOrder.Items
+		// Clear existing items
+		if err := database.DB.Model(&order).Association("Items").Clear(); err != nil {
+			http.Error(writer, "Could not clear existing items", http.StatusInternalServerError)
+			return
+		}
+		// Add new items
+		for _, item := range updatedOrder.Items {
+			order.Items = append(order.Items, item)
+		}
 	}
 
 	if err := database.DB.Save(&order).Error; err != nil {

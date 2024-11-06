@@ -30,9 +30,13 @@ export class LoginComponent implements OnInit {
       const { email, password } = this.loginForm.value;
       this.authService.login(email, password).subscribe(
         (res: any) => {
-          if (email === 'admin@gmail.com') { 
+          if (res.role === 'admin') {
             this.router.navigate(['/home-admin']);
-          } else {
+          }
+          else if(res.role === 'courier') {
+            this.router.navigate(['/home-courier']);
+          }
+          else {
 
 
             console.log('Logged in successfully!', res);

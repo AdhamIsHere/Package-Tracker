@@ -63,4 +63,9 @@ export class AdminAssignComponent implements OnInit {
       }
     );
   }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    window.location.href = '/';
+  }
 }

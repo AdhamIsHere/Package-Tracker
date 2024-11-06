@@ -114,7 +114,8 @@ func Login(writer http.ResponseWriter, r *http.Request) {
 	})
 
 	writer.WriteHeader(http.StatusOK)
-	json.NewEncoder(writer).Encode(map[string]string{"token": tokenString})
+	json.NewEncoder(writer).Encode(map[string]string{"token": tokenString,
+		"role": user.Role})
 }
 
 func RegisterUser(writer http.ResponseWriter, req *http.Request) {

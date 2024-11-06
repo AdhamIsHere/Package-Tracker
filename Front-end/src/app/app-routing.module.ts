@@ -11,6 +11,7 @@ import { HomeAdminnComponent } from './home-adminn/home-adminn.component';
 import { OrdersAdminComponent } from './orders-admin/orders-admin.component';
 import { AdminAssignComponent } from './admin-assign/admin-assign.component';
 import { AdminUpdateComponent } from './admin-update/admin-update.component';
+import {CourierHomeComponent} from "./courier-home/courier-home.component";
 
 const routes: Routes = [
   { path: '', component: SplashScreenComponent },
@@ -23,7 +24,8 @@ const routes: Routes = [
   {path:'home-admin',component:HomeAdminnComponent},
   {path:'orders-admin',component:OrdersAdminComponent},
   {path:'admin-assign/:orderId',component:AdminAssignComponent},
-  {path:'admin-update/:orderId',component:AdminUpdateComponent}
+  {path:'admin-update/:orderId',component:AdminUpdateComponent},
+  {path:'home-courier',component:CourierHomeComponent}
 ];
 
 @NgModule({

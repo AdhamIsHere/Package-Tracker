@@ -17,6 +17,7 @@ export class AdminUpdateComponent implements OnInit {
   successMessage: string = '';
   errorMessage: string = '';
   orderId: number = 0;
+  itemsMenu: any[] = [];
 
   constructor(
     private orderService: OrderService,
@@ -24,13 +25,15 @@ export class AdminUpdateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadOrders();
-
+    this.loadItems();
     this.route.paramMap.subscribe(params => {
       this.orderId = Number(params.get('orderId'));
+      this.loadOrder();
     });
+
   }
-  loadOrders() {
+
+  loadOrder(): void {
     this.orderService.getAllOrders().subscribe(
       data => {
         // find order by id
@@ -39,39 +42,23 @@ export class AdminUpdateComponent implements OnInit {
           this.pickupLocation = order.pickup_location;
           this.dropoff_location = order.dropoff_location;
           this.deliveryTime = order.delivery_time;
-          this.selectedItems = order.items;
+         this.selectedItems = order.items.map((item: any) =>
+            this.itemsMenu.find(menuItem => menuItem.id === item.id) || item);
+
         } else {
           this.errorMessage = 'Order not found';
         }
       },
       error => {
         this.errorMessage = 'Error fetching order';
-        console.error('Error fetching orders', error);
-      }
-    );
-  }
-
-  // Load order details along with available items for selection
-  loadOrderDetails(orderId: number): void {
-    this.orderService.getOrderById(orderId).subscribe(
-      data => {
-        // Assuming data contains 'order' with order details and 'availableItems' with all items
-        this.pickupLocation = data.order.pickup_location;
-        this.dropoff_location = data.order.dropoff_location;
-        this.deliveryTime = data.order.delivery_time;
-        this.selectedItems = data.order.items;
-        this.items = data.availableItems; // Populate available items for the item selection dropdowns
-      },
-      error => {
-        this.errorMessage = 'Error fetching order details';
-        console.error('Error fetching order details', error);
+        console.error('Error fetching order', error);
       }
     );
   }
 
   // Add a new item slot to selectedItems array for adding another item to the order
   addItem(): void {
-    this.selectedItems.push({ name: '' }); // Adds a new item slot with an empty name
+    this.selectedItems.push({ id: null, name: '' }); // Adds a new item slot with an empty name
   }
 
   // Remove an item from selectedItems array based on index
@@ -89,7 +76,6 @@ export class AdminUpdateComponent implements OnInit {
       delivery_time: this.deliveryTime,
       items: this.selectedItems
     };
-
     // Call the service method to update the order
     this.orderService.updateOrder(this.orderId, updatedOrder).subscribe(
       response => {
@@ -100,6 +86,22 @@ export class AdminUpdateComponent implements OnInit {
         this.errorMessage = 'Error updating order';
         this.successMessage = '';
         console.error('Error updating order', error);
+      }
+    );
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    window.location.href = '/';
+  }
+
+  loadItems(): void {
+    this.orderService.getItems().subscribe(
+      data => {
+        this.itemsMenu = data;
+      },
+      error => {
+        console.error('Error fetching items', error);
       }
     );
   }
