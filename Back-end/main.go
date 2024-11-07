@@ -48,6 +48,7 @@ func main() {
 
 	//admin routes
 	router.HandleFunc("/order/viewall", handlers.ViewAllOrders).Methods("GET")
+	router.HandleFunc("/order", handlers.ViewFilteredOrder).Methods("GET")
 	router.HandleFunc("/order/assign", handlers.AssignOrder).Methods("PUT")
 	router.HandleFunc("/order/delete", handlers.DeleteOrder).Methods("DELETE")
 	router.HandleFunc("/order/update", handlers.UpdateOrderDetails).Methods("PUT")

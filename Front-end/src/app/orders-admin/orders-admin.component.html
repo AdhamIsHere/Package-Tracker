@@ -1,33 +1,36 @@
 
-<div class="navcontainer">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark custom_container m-auto">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/home-admin">Package-tracker</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark custom_container m-auto">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/home-admin">Package-tracker</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto custom_ul">
-          <li class="nav-item ">
-            <a class="btn btn-secondary mx-3 " aria-current="page" routerLink="/home-admin">Home</a>
-          </li>
-          <li class="nav-item ">
-            <a class="btn btn-secondary mx-3" routerLink="/orders-admin">All Orders</a>
-          </li>
-          <li class="nav-item">
-            <button class="btn btn-outline-danger mx-3" (click)="logout()">Logout</button>
-          </li>
-        </ul>
-      </div>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto custom_ul">
+        <li class="nav-item ">
+          <a class="btn btn-secondary mx-3 " aria-current="page" routerLink="/home-admin">Home</a>
+        </li>
+        <li class="nav-item ">
+          <a class="btn btn-secondary mx-3" routerLink="/orders-admin">All Orders</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-secondary mx-3" routerLink="/order-filter-courier">Order Filtered by courier</a>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-outline-danger mx-3" (click)="logout()">Logout</button>
+        </li>
+      </ul>
     </div>
-  </nav>
-</div>
+  </div>
+</nav>
+
+
 <div class="custom-container d-flex justify-content-center align-items-center">
-    <div class="custom-card bg-light p-4 text-center">
-      <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
-      <div class="alert alert-danger" *ngIf="isOrdersEmpty()">Empty orders</div>
-      <div *ngIf="!isOrdersEmpty()">
+  <div class="custom-card bg-light p-4 text-center">
+    <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+    <div class="alert alert-danger" *ngIf="isOrdersEmpty()">Empty orders</div>
+    <div *ngIf="!isOrdersEmpty()">
       <h3 class="title text-center">Order ID: {{ getCurrentOrder()?.id }}</h3>
       <p><strong>Seller ID:</strong> {{ getCurrentOrder()?.seller_id }}</p>
       <p><strong>Courier ID:</strong> {{ getCurrentOrder()?.courier_id || 'Not Assigned' }}</p>
@@ -42,16 +45,18 @@
           <strong>{{ item.name }}</strong>
         </li>
       </ul>
-        <div class="mt-3 w-50 mx-auto">
-          <p><button class="btn btn-info w-100" [routerLink]="['/admin-assign', getCurrentOrder()?.id]">Assign Order</button></p>
-          <p><button class="btn btn-primary me-2 w-100" [routerLink]="['/admin-update', getCurrentOrder()?.id]">Update Order</button></p>
-          <p>        <button class="btn btn-danger me-2 w-100" (click)="cancelOrder(getCurrentOrder()?.id)">Delete Order</button></p>
-        </div>
+
+      <div class="mt-3 w-50 mx-auto">
+        <p><button class="btn btn-info w-100" [routerLink]="['/admin-assign', getCurrentOrder()?.id]">Assign Order</button></p>
+        <p><button class="btn btn-primary me-2 w-100" [routerLink]="['/admin-update', getCurrentOrder()?.id]">Update Order</button></p>
+        <p><button class="btn btn-danger me-2 w-100" (click)="cancelOrder(getCurrentOrder()?.id)">Delete Order</button></p>
+      </div>
+
       <div class="mt-4 d-flex justify-content-between">
         <button class="btn btn-outline-primary" (click)="previousOrder()" [disabled]="currentOrderIndex === 0">Previous</button>
         <button class="btn btn-outline-primary" (click)="nextOrder()" [disabled]="currentOrderIndex === orders.length - 1">Next</button>
-
       </div>
+
     </div>
   </div>
-  </div>
+</div>

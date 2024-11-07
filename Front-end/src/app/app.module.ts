@@ -21,6 +21,7 @@ import { AdminUpdateComponent } from './admin-update/admin-update.component';
 import { CourierUpdateComponent } from './courier-update/courier-update.component';
 import { CourierViewComponent } from './courier-view/courier-view.component';
 import { CourierHomeComponent } from './courier-home/courier-home.component';
+import { OrderFilterCourierComponent } from './order-filter-courier/order-filter-courier.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { CourierHomeComponent } from './courier-home/courier-home.component';
     CourierUpdateComponent,
     CourierViewComponent,
     CourierHomeComponent,
+    OrderFilterCourierComponent,
 
   ],
   imports: [

@@ -1,0 +1,80 @@
+.parent-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.custom-container {
+  flex: 1;
+  margin: 0px;
+  max-width: 90%;
+}
+
+.custom-card {
+  width: 75%;
+  max-width: 800px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.mt-4 {
+  margin-top: 1.5rem;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.me-2 {
+  margin-right: 0.5rem;
+}
+
+.w-50 {
+  width: 50%;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.form-select {
+  margin-top: 0.5rem;
+  border: 2px solid #cce5ff;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.custom-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/assets/images/background.webp'); /* Adjust path as needed */
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px);
+  z-index: -1;
+  transform: scale(1.1);
+}

@@ -135,4 +135,15 @@ export class OrderService {
     });
   }
 
+  //order filter by courier
+  getOrdersFiltered(courierId: number): Observable<any[]> {
+    const token = localStorage.getItem('token');
+    return this.http.get<any[]>(`${this.apiUrl}/order?courier_id=${courierId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+  }
+
 }

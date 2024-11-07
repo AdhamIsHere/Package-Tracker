@@ -34,6 +34,34 @@ func ViewAllOrders(writer http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(writer).Encode(orders)
 }
 
+func ViewFilteredOrder(writer http.ResponseWriter, req *http.Request) {
+	if !IsAdmin(req) {
+		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Get the courier_id query parameter
+	courierID := req.URL.Query().Get("courier_id")
+
+	// If courier_id is not provided, return an error
+	if courierID == "" {
+		http.Error(writer, "courier_id is required", http.StatusBadRequest)
+		return
+	}
+
+	cid, err := strconv.Atoi(courierID)
+	if err != nil {
+		http.Error(writer, "Invalid courier ID", http.StatusBadRequest)
+		return
+	}
+
+	// Get orders filtered by courier_id
+	orders := []models.Order{}
+	query := database.DB.Preload("Items").Where("courier_id = ?", cid)
+	query.Find(&orders)
+	json.NewEncoder(writer).Encode(orders)
+}
+
 func DeleteOrder(writer http.ResponseWriter, req *http.Request) {
 	if !IsAdmin(req) && !IsSeller(req) {
 		http.Error(writer, "Unauthorized", http.StatusUnauthorized)
