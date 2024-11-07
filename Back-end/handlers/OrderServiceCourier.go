@@ -139,7 +139,7 @@ func UpdateOrderStatus(writer http.ResponseWriter, req *http.Request) {
 	}
 
 	status := req.URL.Query().Get("status")
-	orderID := req.URL.Query().Get("id")
+	orderID := req.URL.Query().Get("oid")
 	if orderID == "" {
 		http.Error(writer, "Order ID is required", http.StatusBadRequest)
 		return
@@ -169,6 +169,11 @@ func UpdateOrderStatus(writer http.ResponseWriter, req *http.Request) {
 
 	if order.CourierID == nil || *order.CourierID != courierID {
 		http.Error(writer, "Unauthorized: You are not assigned to this order", http.StatusUnauthorized)
+		return
+	}
+
+	if order.Status == "pending" {
+		http.Error(writer, "Order is not accepted", http.StatusBadRequest)
 		return
 	}
 

@@ -108,9 +108,9 @@ export class OrderService {
   }
 
   //courier update order status
-  updateOrderStatus(orderDetails: any): Observable<any> {
+  updateOrderStatus(orderId: number, status:string): Observable<any> {
     const token = localStorage.getItem('token');
-    return this.http.put<any>(`${this.apiUrl}/order/updatestatus`, orderDetails, {
+    return this.http.put<any>(`${this.apiUrl}/order/updatestatus?oid=${orderId}&status=${status}`,null ,{
       headers: {
         Authorization: `Bearer ${token}`
       }

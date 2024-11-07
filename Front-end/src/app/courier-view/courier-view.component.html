@@ -56,16 +56,17 @@
         <td class="text-center">{{ order.dropoff_location }}</td>
         <td class="text-center">{{ order.items.length }}</td>
         <td class="text-center">
-          <span *ngIf="order.status == 'pending'" class="badge bg-warning text-dark custom-badge">{{ order.status }}</span>
-          <span *ngIf="order.status == 'accepted'" class="badge bg-info text-dark custom-badge">{{ order.status }}</span>
-          <span *ngIf="order.status == 'delivered'" class="badge bg-success text-dark custom-badge">{{ order.status }}</span>
+          <span *ngIf="order.status == 'pending'" class="badge bg-warning text-dark p-2 custom-badge">{{ order.status }}</span>
+          <span *ngIf="order.status != 'pending' && order.status !='delivered'" class="badge bg-info text-dark p-2 custom-badge">{{ order.status }}</span>
+          <span *ngIf="order.status == 'delivered'" class="badge bg-success text-dark p-2 custom-badge">{{ order.status }}</span>
         </td>
         <td>
-          <div class="ms-2">
+          <div class="ms-2 text-center">
             <button *ngIf="order.status =='pending'" class="btn btn-info" (click)="acceptOrder(order.id)">Accept
             </button>
             <button *ngIf="order.status !='pending'" class="btn btn-warning"
-                    [routerLink]="['/order', order.id, 'status']">Update Status
+                    [routerLink]="['/order', order.id, 'status']"
+                    [queryParams]="{ status: order.status }">Update Status
             </button>
             <button class="btn btn-danger ms-1" (click)="declineOrder(order.id)">Decline</button>
           </div>
