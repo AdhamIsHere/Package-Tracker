@@ -51,7 +51,11 @@
         <p><strong>Pickup Location:</strong> {{ getCurrentOrder()?.pickup_location }}</p>
         <p><strong>Drop-Off Location:</strong> {{ getCurrentOrder()?.dropoff_location }}</p>
         <p><strong>Delivery Time:</strong> {{ getCurrentOrder()?.delivery_time }}</p>
-        <p><strong>Status:</strong> {{ getCurrentOrder()?.status }}</p>
+        <p><strong>Status: </strong>
+          <span *ngIf=" getCurrentOrder()?.status == 'pending'" class="badge bg-warning text-dark p-2 custom-badge"> {{ getCurrentOrder()?.status }}</span>
+          <span *ngIf=" getCurrentOrder()?.status != 'pending' &&  getCurrentOrder()?.status !='delivered'" class="badge bg-info text-dark p-2 custom-badge"> {{ getCurrentOrder()?.status }}</span>
+          <span *ngIf=" getCurrentOrder()?.status == 'delivered'" class="badge bg-success  p-2 custom-badge"> {{ getCurrentOrder()?.status }}</span>
+        </p>
 
         <h4>Items</h4>
         <ul class="list-group">

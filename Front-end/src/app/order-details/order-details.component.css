@@ -91,3 +91,7 @@ p {
 .custom_li:hover .custom_a {
   color: #000000;
 }
+
+.custom-badge{
+  font-size: inherit;
+}

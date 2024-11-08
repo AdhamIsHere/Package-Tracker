@@ -58,7 +58,7 @@
         <td class="text-center">
           <span *ngIf="order.status == 'pending'" class="badge bg-warning text-dark p-2 custom-badge">{{ order.status }}</span>
           <span *ngIf="order.status != 'pending' && order.status !='delivered'" class="badge bg-info text-dark p-2 custom-badge">{{ order.status }}</span>
-          <span *ngIf="order.status == 'delivered'" class="badge bg-success text-dark p-2 custom-badge">{{ order.status }}</span>
+          <span *ngIf="order.status == 'delivered'" class="badge bg-success p-2 custom-badge">{{ order.status }}</span>
         </td>
         <td>
           <div class="ms-2 text-center">

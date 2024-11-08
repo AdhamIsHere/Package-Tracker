@@ -109,3 +109,7 @@ p {
   border-color: #dc3545;
   color: #ffffff;
 }
+
+.custom-badge{
+  font-size: inherit;
+}

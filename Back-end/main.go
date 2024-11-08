@@ -65,6 +65,11 @@ func main() {
 		{ID: "3", Name: "Headphones"},
 		{ID: "4", Name: "Keyboard"},
 		{ID: "5", Name: "Mouse"},
+		{ID: "6", Name: "Monitor"},
+		{ID: "7", Name: "Tablet"},
+		{ID: "8", Name: "Smartwatch"},
+		{ID: "9", Name: "Camera"},
+		{ID: "10", Name: "Speaker"},
 	}
 
 	pass, _ := bcrypt.GenerateFromPassword([]byte("admin"), bcrypt.DefaultCost)

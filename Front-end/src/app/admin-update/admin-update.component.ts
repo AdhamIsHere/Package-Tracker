@@ -18,7 +18,8 @@ export class AdminUpdateComponent implements OnInit {
   errorMessage: string = '';
   orderId: number = 0;
   itemsMenu: any[] = [];
-
+  status: string = '';
+  availableStatuses = ['accepted','picked up', 'in transit', 'delivered'];
   constructor(
     private orderService: OrderService,
     private route: ActivatedRoute
@@ -42,6 +43,7 @@ export class AdminUpdateComponent implements OnInit {
           this.pickupLocation = order.pickup_location;
           this.dropoff_location = order.dropoff_location;
           this.deliveryTime = order.delivery_time;
+          this.status = order.status;
          this.selectedItems = order.items.map((item: any) =>
             this.itemsMenu.find(menuItem => menuItem.id === item.id) || item);
 
@@ -74,7 +76,8 @@ export class AdminUpdateComponent implements OnInit {
       pickup_location: this.pickupLocation,
       dropoff_location: this.dropoff_location,
       delivery_time: this.deliveryTime,
-      items: this.selectedItems
+      items: this.selectedItems,
+      status: this.status
     };
     // Call the service method to update the order
     this.orderService.updateOrder(this.orderId, updatedOrder).subscribe(

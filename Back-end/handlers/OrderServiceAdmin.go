@@ -230,6 +230,9 @@ func UpdateOrderDetails(writer http.ResponseWriter, req *http.Request) {
 	if updatedOrder.DeliveryTime != "" {
 		order.DeliveryTime = updatedOrder.DeliveryTime
 	}
+	if updatedOrder.Status != "" {
+		order.Status = updatedOrder.Status
+	}
 	if updatedOrder.Items != nil {
 		// Clear existing items
 		if err := database.DB.Model(&order).Association("Items").Clear(); err != nil {

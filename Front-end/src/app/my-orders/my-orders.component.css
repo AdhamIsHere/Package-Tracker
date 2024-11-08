@@ -13,11 +13,6 @@
   background-size: cover;
   background-position: center;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-  position: absolute;
-  left: 0;
-  right: 0;
-  z-index: 100;
-
 }
 
 .custom-container::before {
@@ -89,4 +84,8 @@
 
 .custom_li:hover .custom_a {
   color: #000000;
+}
+
+.custom-badge{
+  font-size: inherit;
 }

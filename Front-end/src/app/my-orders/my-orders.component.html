@@ -49,21 +49,24 @@
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let order of orders">
-          <td>{{ order.order_id }}</td>
-          <td>{{ order.seller_id }}</td>
-          <td *ngIf="order.courier_id != null ">{{ order.courier_id }}</td>
-          <td *ngIf="order.courier_id == null ">Not Assigned</td>
-          <td>{{ order.number_of_items }}</td>
-          <td>{{ order.status }}</td>
-          <td>
-
-            <button class="btn btn-info me-1" [routerLink]="['/order-details', order.order_id]">Details</button>
-            <button *ngIf="order.status == 'pending'" class="btn btn-danger ms-1" (click)="cancelOrder(order.order_id)">Cancel</button>
-          </td>
-        </tr>
-      </tbody>
+     <tbody>
+  <tr *ngFor="let order of orders" class="align-middle">
+    <td class="text-center">{{ order.order_id }}</td>
+    <td class="text-center">{{ order.seller_id }}</td>
+    <td class="text-center" *ngIf="order.courier_id != null ">{{ order.courier_id }}</td>
+    <td class="text-center" *ngIf="order.courier_id == null ">Not Assigned</td>
+    <td class="text-center">{{ order.number_of_items }}</td>
+    <td class="text-center">
+      <span *ngIf="order.status == 'pending'" class="badge bg-warning text-dark p-2 custom-badge align-middle">{{ order.status }}</span>
+      <span *ngIf="order.status != 'pending' && order.status !='delivered'" class="badge bg-info text-dark p-2 custom-badge align-middle">{{ order.status }}</span>
+      <span *ngIf="order.status == 'delivered'" class="badge bg-success p-2 custom-badge align-middle">{{ order.status }}</span>
+    </td>
+    <td class="text-center">
+      <button class="btn btn-info mx-1" [routerLink]="['/order-details', order.order_id]">Details</button>
+      <button *ngIf="order.status == 'pending'" class="btn btn-danger mx-1" (click)="cancelOrder(order.order_id)">Cancel</button>
+    </td>
+  </tr>
+</tbody>
     </table>
   </div>
 </div>
